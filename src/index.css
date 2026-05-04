@@ -1,26 +1,22 @@
 @import "tailwindcss";
 
 @theme {
-  --color-black:      #000000;
-  --color-surface:    #0a0a0a;
-  --color-surface-2:  #111111;
-  --color-surface-3:  #1a1a1a;
-  --color-white:      #ffffff;
-  --color-off-white:  #f0f0f0;
-  --color-gray-hi:    #c0c0c0;
-  --color-gray-mid:   #808080;
-  --color-gray-lo:    #3a3a3a;
-  --color-border:     rgba(255,255,255,0.08);
-  --color-border-hi:  rgba(255,255,255,0.15);
+  /* ── Brand palette (exact kit values) ── */
+  --color-off-black:  #0D0D0D;
+  --color-charcoal:   #1A1A1A;
+  --color-silver:     #A6A6A6;
+  --color-white:      #FFFFFF;
 
-  /* Outfit: brand wordmark + display headlines */
-  --font-brand: "Outfit", sans-serif;
-  /* DM Sans: body, captions, UI labels */
-  --font-sans:  "DM Sans", sans-serif;
+  /* Convenience aliases */
+  --color-surface:    #0D0D0D;
+  --color-surface-2:  #1A1A1A;
+
+  /* ── Brand font: Poppins ── */
+  --font-sans: "Poppins", sans-serif;
 }
 
 @keyframes fadeUp {
-  from { opacity: 0; transform: translateY(18px); }
+  from { opacity: 0; transform: translateY(16px); }
   to   { opacity: 1; transform: translateY(0); }
 }
 
@@ -28,9 +24,9 @@
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   html { scroll-behavior: smooth; }
   body {
-    background: var(--color-black);
-    color: var(--color-white);
-    font-family: var(--font-sans);
+    background: #0D0D0D;
+    color: #FFFFFF;
+    font-family: "Poppins", sans-serif;
     -webkit-font-smoothing: antialiased;
     overflow-x: hidden;
   }

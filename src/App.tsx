@@ -5,9 +5,19 @@ import { Separator } from '@/components/ui/separator'
 
 const BOOKING_URL = 'https://form.typeform.com/to/CnNOTLPV'
 
+// ── Brand palette ────────────────────────────────────────────────────────────
+const C = {
+  offBlack:  '#0D0D0D',
+  charcoal:  '#1A1A1A',
+  silver:    '#A6A6A6',
+  white:     '#FFFFFF',
+  border:    'rgba(166,166,166,0.15)',   // silver @ 15%
+  borderHi:  'rgba(166,166,166,0.25)',
+}
+
 export default function App() {
   return (
-    <div className="min-h-screen bg-black text-white">
+    <div style={{ background: C.offBlack, color: C.white, minHeight: '100svh' }}>
       <Nav />
       <Hero />
       <TrustBar />
@@ -21,21 +31,26 @@ export default function App() {
 
 /* ─── WORDMARK ────────────────────────────────────────────────────────────── */
 
-function Wordmark({ size = 'md' }: { size?: 'sm' | 'md' | 'lg' }) {
-  const nameSize = { sm: 'text-[1.05rem]', md: 'text-[1.25rem]', lg: 'text-[1.6rem]' }[size]
-  const tagSize  = { sm: 'text-[0.48rem]', md: 'text-[0.55rem]', lg: 'text-[0.65rem]' }[size]
-
+function Wordmark({ scale = 1 }: { scale?: number }) {
   return (
-    <div className="flex flex-col leading-none gap-[3px]">
-      <span
-        className={`font-brand font-[300] text-white tracking-[0.04em] ${nameSize}`}
-        style={{ fontFamily: '"Outfit", sans-serif' }}
-      >
+    <div style={{ display: 'flex', flexDirection: 'column', lineHeight: 1, gap: 3 }}>
+      <span style={{
+        fontFamily: '"Poppins", sans-serif',
+        fontWeight: 300,
+        fontSize: `${1.35 * scale}rem`,
+        letterSpacing: '0.02em',
+        color: C.white,
+      }}>
         detail door
       </span>
-      <span
-        className={`font-sans font-[300] text-white/40 tracking-[0.28em] uppercase ${tagSize}`}
-      >
+      <span style={{
+        fontFamily: '"Poppins", sans-serif',
+        fontWeight: 300,
+        fontSize: `${0.52 * scale}rem`,
+        letterSpacing: '0.32em',
+        color: C.silver,
+        textTransform: 'lowercase' as const,
+      }}>
         clean. delivered.
       </span>
     </div>
@@ -48,79 +63,140 @@ function Nav() {
   const [scrolled, setScrolled] = useState(false)
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 32)
-    window.addEventListener('scroll', onScroll, { passive: true })
-    return () => window.removeEventListener('scroll', onScroll)
+    const fn = () => setScrolled(window.scrollY > 32)
+    window.addEventListener('scroll', fn, { passive: true })
+    return () => window.removeEventListener('scroll', fn)
   }, [])
 
-  const links = [
-    { label: 'Services',     href: '#services' },
-    { label: 'About',        href: '#process' },
-    { label: 'Gallery',      href: '#gallery' },
-    { label: 'Reviews',      href: '#reviews' },
-  ]
+  const links = ['Services', 'About', 'Gallery', 'Reviews']
+
+  const headerStyle: React.CSSProperties = {
+    position: 'fixed',
+    top: 0, left: 0, right: 0,
+    zIndex: 50,
+    background: scrolled ? 'rgba(13,13,13,0.97)' : 'transparent',
+    borderBottom: scrolled ? `1px solid ${C.border}` : '1px solid transparent',
+    transition: 'background 0.3s, border-color 0.3s',
+  }
 
   return (
-    <header
-      className={`fixed top-0 inset-x-0 z-50 transition-all duration-300 ${
-        scrolled ? 'bg-black/96 border-b border-white/[0.07]' : 'bg-transparent'
-      }`}
-    >
-      <div className="mx-auto max-w-7xl px-6 lg:px-10 flex items-center justify-between h-[70px]">
+    <header style={headerStyle}>
+      <div className="mx-auto max-w-7xl px-6 lg:px-10 flex items-center justify-between" style={{ height: 72 }}>
 
-        {/* Stacked wordmark — exactly as in brand kit header */}
-        <a href="#" className="no-underline">
-          <Wordmark size="md" />
+        <a href="#" style={{ textDecoration: 'none' }}>
+          <Wordmark scale={1} />
         </a>
 
-        {/* Desktop nav links */}
+        {/* Desktop nav */}
         <nav className="hidden md:flex items-center gap-8 lg:gap-10">
           {links.map(l => (
             <a
-              key={l.label}
-              href={l.href}
-              className="font-sans text-[0.72rem] font-[400] tracking-[0.14em] uppercase text-white/45 hover:text-white transition-colors duration-200"
+              key={l}
+              href={`#${l.toLowerCase()}`}
+              style={{
+                fontFamily: '"Poppins", sans-serif',
+                fontWeight: 400,
+                fontSize: '0.72rem',
+                letterSpacing: '0.16em',
+                textTransform: 'uppercase',
+                color: C.silver,
+                textDecoration: 'none',
+                transition: 'color 0.2s',
+              }}
+              onMouseEnter={e => (e.currentTarget.style.color = C.white)}
+              onMouseLeave={e => (e.currentTarget.style.color = C.silver)}
             >
-              {l.label}
+              {l}
             </a>
           ))}
         </nav>
 
-        {/* BOOK NOW — rectangular border button matching brand kit */}
+        {/* BOOK NOW — rectangular border, matches brand kit exactly */}
         <div className="flex items-center gap-3">
           <a
             href={BOOKING_URL}
-            className="hidden md:inline-flex items-center justify-center px-5 py-2 border border-white/60 text-white text-[0.72rem] font-[500] tracking-[0.14em] uppercase hover:bg-white hover:text-black transition-all duration-200"
+            className="hidden md:inline-flex items-center justify-center"
+            style={{
+              fontFamily: '"Poppins", sans-serif',
+              fontWeight: 500,
+              fontSize: '0.7rem',
+              letterSpacing: '0.14em',
+              textTransform: 'uppercase',
+              color: C.white,
+              border: `1px solid ${C.white}`,
+              padding: '9px 22px',
+              textDecoration: 'none',
+              transition: 'background 0.2s, color 0.2s',
+            }}
+            onMouseEnter={e => {
+              e.currentTarget.style.background = C.white
+              e.currentTarget.style.color = C.offBlack
+            }}
+            onMouseLeave={e => {
+              e.currentTarget.style.background = 'transparent'
+              e.currentTarget.style.color = C.white
+            }}
           >
             Book Now
           </a>
 
-          {/* Mobile hamburger */}
+          {/* Mobile */}
           <Sheet>
             <SheetTrigger asChild>
-              <button className="md:hidden p-2 text-white/50 hover:text-white transition-colors">
+              <button
+                className="md:hidden p-2"
+                style={{ color: C.silver, background: 'none', border: 'none', cursor: 'pointer' }}
+              >
                 <Menu className="w-5 h-5" />
               </button>
             </SheetTrigger>
-            <SheetContent side="right" className="bg-black border-white/[0.07] w-72">
+            <SheetContent
+              side="right"
+              className="w-72"
+              style={{ background: C.offBlack, borderLeft: `1px solid ${C.border}` }}
+            >
               <div className="flex flex-col h-full pt-8 pb-10 px-4">
-                <Wordmark size="sm" />
+                <Wordmark scale={0.9} />
                 <nav className="flex flex-col gap-0 flex-1 mt-10">
                   {links.map((l, i) => (
-                    <div key={l.label}>
+                    <div key={l}>
                       <a
-                        href={l.href}
-                        className="block py-4 text-[0.82rem] tracking-[0.1em] uppercase text-white/50 hover:text-white transition-colors"
+                        href={`#${l.toLowerCase()}`}
+                        style={{
+                          display: 'block',
+                          padding: '16px 0',
+                          fontFamily: '"Poppins", sans-serif',
+                          fontWeight: 400,
+                          fontSize: '0.78rem',
+                          letterSpacing: '0.12em',
+                          textTransform: 'uppercase',
+                          color: C.silver,
+                          textDecoration: 'none',
+                        }}
                       >
-                        {l.label}
+                        {l}
                       </a>
-                      {i < links.length - 1 && <Separator className="bg-white/[0.06]" />}
+                      {i < links.length - 1 && <Separator style={{ background: C.border }} />}
                     </div>
                   ))}
                 </nav>
                 <a
                   href={BOOKING_URL}
-                  className="mt-auto flex items-center justify-center py-3 border border-white/50 text-white text-[0.75rem] tracking-[0.14em] uppercase hover:bg-white hover:text-black transition-all"
+                  style={{
+                    marginTop: 'auto',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    padding: '12px',
+                    border: `1px solid ${C.white}`,
+                    fontFamily: '"Poppins", sans-serif',
+                    fontWeight: 500,
+                    fontSize: '0.72rem',
+                    letterSpacing: '0.14em',
+                    textTransform: 'uppercase',
+                    color: C.white,
+                    textDecoration: 'none',
+                  }}
                 >
                   Book Now
                 </a>
@@ -138,83 +214,68 @@ function Nav() {
 
 function Hero() {
   return (
-    <section className="relative min-h-svh flex flex-col justify-end overflow-hidden bg-black">
+    <section style={{ position: 'relative', minHeight: '100svh', display: 'flex', flexDirection: 'column', justifyContent: 'flex-end', overflow: 'hidden', background: C.offBlack }}>
 
-      {/* Automotive image layer — swap src for production photography */}
-      <div className="absolute inset-0">
-        {/* Gradient overlays to match brand's dark cinematic look */}
-        <div
-          className="absolute inset-0 z-10"
-          style={{
-            background: [
-              'linear-gradient(to bottom, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.0) 25%, rgba(0,0,0,0.55) 65%, rgba(0,0,0,0.98) 100%)',
-              'linear-gradient(to right, rgba(0,0,0,0.70) 0%, rgba(0,0,0,0.15) 55%, rgba(0,0,0,0) 100%)',
-            ].join(', '),
-          }}
-        />
-        {/* Placeholder dark texture — replace with glossy car photo */}
-        <div
-          className="absolute inset-0 bg-[#0c0c0c]"
-          style={{
-            backgroundImage: `
-              radial-gradient(ellipse 90% 70% at 75% 45%, rgba(255,255,255,0.035) 0%, transparent 65%),
-              repeating-linear-gradient(-52deg, transparent, transparent 60px, rgba(255,255,255,0.008) 60px, rgba(255,255,255,0.008) 61px)
-            `,
-          }}
-        />
-      </div>
+      {/* Dark cinematic overlay — place full-bleed automotive photo behind this */}
+      <div style={{
+        position: 'absolute', inset: 0, zIndex: 1,
+        background: [
+          'linear-gradient(to bottom, rgba(13,13,13,0.6) 0%, rgba(13,13,13,0) 25%, rgba(13,13,13,0.65) 65%, rgba(13,13,13,0.98) 100%)',
+          'linear-gradient(to right, rgba(13,13,13,0.75) 0%, rgba(13,13,13,0.1) 60%)',
+        ].join(', '),
+      }} />
 
-      {/* Hero content */}
-      <div className="relative z-20 mx-auto max-w-7xl px-6 lg:px-10 pb-24 pt-36 w-full">
-        <div className="max-w-xl">
+      {/* Texture placeholder — swap for glossy automotive photo */}
+      <div style={{
+        position: 'absolute', inset: 0, background: '#111111',
+        backgroundImage: `
+          radial-gradient(ellipse 85% 65% at 72% 42%, rgba(255,255,255,0.03) 0%, transparent 65%),
+          repeating-linear-gradient(-50deg, transparent, transparent 55px, rgba(255,255,255,0.007) 55px, rgba(255,255,255,0.007) 56px)
+        `,
+      }} />
 
-          <p
-            className="font-sans text-[0.65rem] font-[400] tracking-[0.35em] uppercase text-white/35 mb-8"
-            style={{ animation: 'fadeUp 0.5s ease both 0.05s' }}
-          >
+      <div className="relative mx-auto max-w-7xl px-6 lg:px-10 pb-24 pt-40 w-full" style={{ zIndex: 2 }}>
+        <div style={{ maxWidth: 560 }}>
+
+          <p style={{
+            fontFamily: '"Poppins", sans-serif', fontWeight: 400,
+            fontSize: '0.65rem', letterSpacing: '0.38em',
+            textTransform: 'uppercase', color: C.silver,
+            marginBottom: 28, animation: 'fadeUp 0.5s ease both 0.05s',
+          }}>
             Mobile · Solano County · Sacramento
           </p>
 
-          {/* Primary display — brand tagline as hero headline */}
-          <h1
-            className="font-brand font-[200] text-white leading-[0.95] mb-8"
-            style={{
-              fontSize: 'clamp(5rem, 16vw, 10.5rem)',
-              letterSpacing: '-0.01em',
-              animation: 'fadeUp 0.55s ease both 0.15s',
-              fontFamily: '"Outfit", sans-serif',
-            }}
-          >
+          {/* Hero headline — brand tagline at display scale */}
+          <h1 style={{
+            fontFamily: '"Poppins", sans-serif',
+            fontWeight: 600,
+            fontSize: 'clamp(4.2rem, 13vw, 9.5rem)',
+            lineHeight: 0.92,
+            letterSpacing: '-0.02em',
+            color: C.white,
+            marginBottom: 28,
+            animation: 'fadeUp 0.55s ease both 0.15s',
+          }}>
             clean.<br />delivered.
           </h1>
 
-          <p
-            className="font-sans font-[300] text-[0.95rem] text-white/45 max-w-xs leading-[1.8] mb-10"
-            style={{ animation: 'fadeUp 0.55s ease both 0.28s' }}
-          >
+          <p style={{
+            fontFamily: '"Poppins", sans-serif', fontWeight: 300,
+            fontSize: '0.95rem', lineHeight: 1.85,
+            color: C.silver, maxWidth: 320,
+            marginBottom: 40, animation: 'fadeUp 0.55s ease both 0.28s',
+          }}>
             Book a mobile detail in 60 seconds. A vetted pro arrives at your door — no shop, no hassle.
           </p>
 
-          <div
-            className="flex flex-wrap gap-3 items-center"
-            style={{ animation: 'fadeUp 0.55s ease both 0.38s' }}
-          >
-            {/* Primary — solid white, matches brand CTA */}
-            <a
-              href={BOOKING_URL}
-              className="inline-flex items-center gap-3 px-7 py-3.5 bg-white text-black font-sans font-[500] text-[0.8rem] tracking-[0.1em] uppercase hover:bg-off-white transition-colors group"
-            >
-              Book My Detail
-              <ArrowRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-0.5" />
-            </a>
-
-            {/* Secondary — ghost rectangular border */}
-            <a
-              href="#process"
-              className="inline-flex items-center gap-2 px-7 py-3.5 border border-white/[0.18] text-white/55 font-sans text-[0.8rem] tracking-[0.1em] uppercase hover:border-white/35 hover:text-white transition-all"
-            >
-              How it works
-            </a>
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 12, animation: 'fadeUp 0.55s ease both 0.38s' }}>
+            <HoverBtn href={BOOKING_URL} variant="solid">
+              Book My Detail <ArrowRight className="w-3.5 h-3.5" style={{ marginLeft: 10 }} />
+            </HoverBtn>
+            <HoverBtn href="#services" variant="ghost">
+              See services
+            </HoverBtn>
           </div>
 
         </div>
@@ -232,18 +293,30 @@ function TrustBar() {
     { value: '100%', label: 'Mobile — we come to you' },
   ]
   return (
-    <div className="border-y border-white/[0.07] bg-[#0a0a0a]">
+    <div style={{ borderTop: `1px solid ${C.border}`, borderBottom: `1px solid ${C.border}`, background: C.charcoal }}>
       <div className="mx-auto max-w-7xl px-6 lg:px-10">
-        <div className="grid grid-cols-1 sm:grid-cols-3 divide-y sm:divide-y-0 sm:divide-x divide-white/[0.07]">
-          {stats.map(s => (
-            <div key={s.label} className="py-8 px-6 lg:px-10 text-center">
-              <div
-                className="font-brand font-[200] text-white leading-none mb-1.5"
-                style={{ fontSize: 'clamp(2rem, 5vw, 3rem)', fontFamily: '"Outfit", sans-serif' }}
-              >
+        <div className="grid grid-cols-1 sm:grid-cols-3">
+          {stats.map((s, i) => (
+            <div
+              key={s.label}
+              style={{
+                padding: '36px 24px',
+                textAlign: 'center',
+                borderRight: i < stats.length - 1 ? `1px solid ${C.border}` : 'none',
+              }}
+            >
+              <div style={{
+                fontFamily: '"Poppins", sans-serif', fontWeight: 300,
+                fontSize: 'clamp(2rem, 5vw, 2.8rem)',
+                color: C.white, lineHeight: 1, marginBottom: 6,
+              }}>
                 {s.value}
               </div>
-              <div className="font-sans text-[0.65rem] tracking-[0.2em] uppercase text-white/30">
+              <div style={{
+                fontFamily: '"Poppins", sans-serif', fontWeight: 400,
+                fontSize: '0.62rem', letterSpacing: '0.22em',
+                textTransform: 'uppercase', color: C.silver,
+              }}>
                 {s.label}
               </div>
             </div>
@@ -283,75 +356,71 @@ function Services() {
   ]
 
   return (
-    <section id="services" className="py-28 lg:py-40">
+    <section id="services" style={{ padding: '120px 0', background: C.offBlack }}>
       <div className="mx-auto max-w-7xl px-6 lg:px-10">
 
-        <div className="mb-16 lg:mb-20">
-          <p className="font-sans text-[0.65rem] tracking-[0.3em] uppercase text-white/30 mb-4">
+        <div style={{ marginBottom: 64 }}>
+          <p style={{ fontFamily: '"Poppins", sans-serif', fontWeight: 400, fontSize: '0.62rem', letterSpacing: '0.32em', textTransform: 'uppercase', color: C.silver, marginBottom: 16 }}>
             What we offer
           </p>
-          <h2
-            className="font-brand font-[300] text-white leading-none"
-            style={{ fontSize: 'clamp(2.8rem, 8vw, 5.5rem)', fontFamily: '"Outfit", sans-serif' }}
-          >
+          <h2 style={{ fontFamily: '"Poppins", sans-serif', fontWeight: 600, fontSize: 'clamp(2.5rem, 7vw, 5rem)', color: C.white, lineHeight: 0.95, letterSpacing: '-0.02em' }}>
             Services
           </h2>
         </div>
 
-        <div className="grid lg:grid-cols-3 border border-white/[0.08]">
+        <div className="grid lg:grid-cols-3" style={{ border: `1px solid ${C.border}` }}>
           {services.map((s, i) => (
             <div
               key={s.number}
-              className={`relative flex flex-col p-8 lg:p-10 border-b lg:border-b-0 border-white/[0.08] ${
-                i < services.length - 1 ? 'lg:border-r' : ''
-              } ${s.featured ? 'bg-[#0d0d0d]' : 'bg-black'}`}
+              style={{
+                display: 'flex', flexDirection: 'column',
+                padding: '40px 36px',
+                background: s.featured ? C.charcoal : C.offBlack,
+                borderRight: i < services.length - 1 ? `1px solid ${C.border}` : 'none',
+                position: 'relative',
+              }}
             >
               {s.featured && (
-                <span className="absolute top-6 right-6 font-sans text-[0.6rem] tracking-[0.18em] uppercase px-3 py-1 border border-white/[0.14] text-white/40">
+                <span style={{
+                  position: 'absolute', top: 24, right: 24,
+                  fontFamily: '"Poppins", sans-serif', fontWeight: 400,
+                  fontSize: '0.58rem', letterSpacing: '0.18em',
+                  textTransform: 'uppercase', color: C.silver,
+                  border: `1px solid ${C.border}`,
+                  padding: '4px 12px',
+                }}>
                   Most popular
                 </span>
               )}
 
-              <span
-                className="font-brand font-[200] text-white/[0.06] leading-none mb-6 select-none"
-                style={{ fontSize: '4rem', fontFamily: '"Outfit", sans-serif' }}
-              >
+              <span style={{ fontFamily: '"Poppins", sans-serif', fontWeight: 300, fontSize: '3.5rem', color: 'rgba(166,166,166,0.1)', lineHeight: 1, marginBottom: 24, userSelect: 'none' }}>
                 {s.number}
               </span>
 
-              <h3
-                className="font-brand font-[300] text-white mb-1"
-                style={{ fontSize: '1.65rem', fontFamily: '"Outfit", sans-serif' }}
-              >
+              <h3 style={{ fontFamily: '"Poppins", sans-serif', fontWeight: 500, fontSize: '1.4rem', color: C.white, marginBottom: 4 }}>
                 {s.name}
               </h3>
-              <p className="font-sans text-[0.65rem] tracking-[0.2em] uppercase text-white/30 mb-6">
+              <p style={{ fontFamily: '"Poppins", sans-serif', fontWeight: 400, fontSize: '0.6rem', letterSpacing: '0.22em', textTransform: 'uppercase', color: C.silver, marginBottom: 20 }}>
                 {s.tagline}
               </p>
-              <p className="font-sans font-[300] text-[0.875rem] text-white/45 leading-[1.8] mb-8 flex-1">
+              <p style={{ fontFamily: '"Poppins", sans-serif', fontWeight: 300, fontSize: '0.85rem', lineHeight: 1.85, color: C.silver, marginBottom: 28, flex: 1 }}>
                 {s.description}
               </p>
 
-              <ul className="flex flex-col gap-3 mb-8">
+              <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: 10, marginBottom: 28 }}>
                 {s.items.map(item => (
-                  <li key={item} className="flex items-center gap-3 font-sans text-[0.82rem] text-white/50">
-                    <Check className="w-3 h-3 text-white/25 shrink-0" strokeWidth={2} />
-                    {item}
+                  <li key={item} style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                    <Check style={{ width: 12, height: 12, color: C.silver, flexShrink: 0 }} strokeWidth={2} />
+                    <span style={{ fontFamily: '"Poppins", sans-serif', fontWeight: 300, fontSize: '0.82rem', color: C.silver }}>
+                      {item}
+                    </span>
                   </li>
                 ))}
               </ul>
 
-              <a
-                href={BOOKING_URL}
-                className={`inline-flex items-center justify-between gap-2 px-5 py-3 font-sans text-[0.75rem] tracking-[0.1em] uppercase transition-all ${
-                  s.featured
-                    ? 'bg-white text-black hover:bg-off-white'
-                    : 'border border-white/[0.12] text-white/50 hover:border-white/25 hover:text-white'
-                }`}
-              >
-                Book this service
-                <ChevronRight className="w-3.5 h-3.5" />
-              </a>
+              <HoverBtn href={BOOKING_URL} variant={s.featured ? 'solid' : 'ghost'} small>
+                Book this service <ChevronRight className="w-3.5 h-3.5" style={{ marginLeft: 8 }} />
+              </HoverBtn>
             </div>
           ))}
         </div>
@@ -383,43 +452,39 @@ function Process() {
   ]
 
   return (
-    <section id="process" className="py-28 lg:py-40 bg-[#080808]">
+    <section id="about" style={{ padding: '120px 0', background: C.charcoal }}>
       <div className="mx-auto max-w-7xl px-6 lg:px-10">
         <div className="grid lg:grid-cols-2 gap-16 lg:gap-28 items-start">
 
-          {/* Left — sticky heading */}
           <div className="lg:sticky lg:top-28">
-            <p className="font-sans text-[0.65rem] tracking-[0.3em] uppercase text-white/30 mb-4">
+            <p style={{ fontFamily: '"Poppins", sans-serif', fontWeight: 400, fontSize: '0.62rem', letterSpacing: '0.32em', textTransform: 'uppercase', color: C.silver, marginBottom: 16 }}>
               Simple process
             </p>
-            <h2
-              className="font-brand font-[300] text-white leading-[0.95] mb-6"
-              style={{ fontSize: 'clamp(2.8rem, 8vw, 5rem)', fontFamily: '"Outfit", sans-serif' }}
-            >
+            <h2 style={{ fontFamily: '"Poppins", sans-serif', fontWeight: 600, fontSize: 'clamp(2.5rem, 7vw, 4.5rem)', color: C.white, lineHeight: 0.95, letterSpacing: '-0.02em', marginBottom: 24 }}>
               Three steps.<br />Zero hassle.
             </h2>
-            <p className="font-sans font-[300] text-[0.875rem] text-white/40 max-w-xs leading-[1.85]">
+            <p style={{ fontFamily: '"Poppins", sans-serif', fontWeight: 300, fontSize: '0.875rem', lineHeight: 1.85, color: C.silver, maxWidth: 300 }}>
               We built the booking flow so you spend less time arranging and more time driving a clean car.
             </p>
           </div>
 
-          {/* Right — numbered steps */}
-          <div className="flex flex-col">
+          <div>
             {steps.map((s, i) => (
               <div key={s.n}>
-                <div className="flex gap-7 py-9">
-                  <span
-                    className="font-brand font-[200] text-white/[0.09] leading-none min-w-[2.5rem] pt-0.5 select-none"
-                    style={{ fontSize: '2.2rem', fontFamily: '"Outfit", sans-serif' }}
-                  >
+                <div style={{ display: 'flex', gap: 28, padding: '36px 0' }}>
+                  <span style={{ fontFamily: '"Poppins", sans-serif', fontWeight: 300, fontSize: '2rem', color: 'rgba(166,166,166,0.18)', lineHeight: 1, minWidth: '2.5rem', paddingTop: 2, userSelect: 'none' }}>
                     {s.n}
                   </span>
                   <div>
-                    <h3 className="font-sans font-[500] text-[0.95rem] text-white mb-2.5">{s.title}</h3>
-                    <p className="font-sans font-[300] text-[0.85rem] text-white/40 leading-[1.85]">{s.body}</p>
+                    <h3 style={{ fontFamily: '"Poppins", sans-serif', fontWeight: 500, fontSize: '0.95rem', color: C.white, marginBottom: 10 }}>
+                      {s.title}
+                    </h3>
+                    <p style={{ fontFamily: '"Poppins", sans-serif', fontWeight: 300, fontSize: '0.85rem', lineHeight: 1.85, color: C.silver }}>
+                      {s.body}
+                    </p>
                   </div>
                 </div>
-                {i < steps.length - 1 && <Separator className="bg-white/[0.06]" />}
+                {i < steps.length - 1 && <div style={{ height: 1, background: C.border }} />}
               </div>
             ))}
           </div>
@@ -436,64 +501,61 @@ function CtaBanner() {
   const areas = ['Dixon', 'Fairfield', 'Vacaville', 'Suisun City', 'Sacramento']
 
   return (
-    <section id="areas" className="py-28 lg:py-40">
+    <section id="gallery" style={{ padding: '120px 0', background: C.offBlack }}>
       <div className="mx-auto max-w-7xl px-6 lg:px-10">
-        <div className="relative border border-white/[0.08] bg-[#0a0a0a] p-10 lg:p-16 overflow-hidden">
+        <div style={{
+          position: 'relative',
+          border: `1px solid ${C.border}`,
+          background: C.charcoal,
+          padding: 'clamp(40px, 6vw, 72px)',
+          overflow: 'hidden',
+        }}>
+          <div style={{
+            position: 'absolute', inset: 0, pointerEvents: 'none',
+            background: 'radial-gradient(ellipse 50% 70% at 85% 50%, rgba(166,166,166,0.04) 0%, transparent 65%)',
+          }} />
 
-          {/* Subtle right-side glow — references glossy car imagery */}
-          <div
-            className="absolute inset-0 pointer-events-none"
-            style={{
-              background: 'radial-gradient(ellipse 50% 70% at 90% 50%, rgba(255,255,255,0.025) 0%, transparent 65%)',
-            }}
-          />
-
-          <div className="relative z-10 grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+          <div className="relative grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
             <div>
-              <div className="flex items-center gap-2.5 mb-7">
-                <MapPin className="w-3.5 h-3.5 text-white/25" />
-                <span className="font-sans text-[0.65rem] tracking-[0.28em] uppercase text-white/30">
+              <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 28 }}>
+                <MapPin style={{ width: 14, height: 14, color: C.silver }} />
+                <span style={{ fontFamily: '"Poppins", sans-serif', fontWeight: 400, fontSize: '0.62rem', letterSpacing: '0.28em', textTransform: 'uppercase', color: C.silver }}>
                   Serving your area
                 </span>
               </div>
 
-              <h2
-                className="font-brand font-[300] text-white leading-[0.95] mb-5"
-                style={{ fontSize: 'clamp(2.4rem, 7vw, 4.2rem)', fontFamily: '"Outfit", sans-serif' }}
-              >
+              <h2 style={{ fontFamily: '"Poppins", sans-serif', fontWeight: 600, fontSize: 'clamp(2.2rem, 6vw, 4rem)', color: C.white, lineHeight: 0.95, letterSpacing: '-0.02em', marginBottom: 20 }}>
                 Your driveway<br />is our shop.
               </h2>
 
-              <p className="font-sans font-[300] text-[0.875rem] text-white/40 max-w-sm leading-[1.85] mb-7">
+              <p style={{ fontFamily: '"Poppins", sans-serif', fontWeight: 300, fontSize: '0.875rem', lineHeight: 1.85, color: C.silver, maxWidth: 320, marginBottom: 28 }}>
                 Connecting customers with mobile detailers across Solano County and Greater Sacramento.
               </p>
 
-              <div className="flex flex-wrap gap-2" id="reviews">
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }} id="reviews">
                 {areas.map(a => (
-                  <span
-                    key={a}
-                    className="font-sans text-[0.68rem] tracking-[0.08em] px-3.5 py-1.5 border border-white/[0.09] text-white/35"
-                  >
+                  <span key={a} style={{
+                    fontFamily: '"Poppins", sans-serif', fontWeight: 400,
+                    fontSize: '0.65rem', letterSpacing: '0.08em',
+                    padding: '6px 14px',
+                    border: `1px solid ${C.border}`,
+                    color: C.silver,
+                  }}>
                     {a}
                   </span>
                 ))}
               </div>
             </div>
 
-            <div className="flex flex-col items-start lg:items-end gap-5">
-              <p className="font-sans font-[300] text-[0.8rem] text-white/30 max-w-[220px] lg:text-right leading-[1.85]">
+            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: 20 }} className="lg:items-end">
+              <p style={{ fontFamily: '"Poppins", sans-serif', fontWeight: 300, fontSize: '0.8rem', lineHeight: 1.85, color: C.silver, maxWidth: 220 }} className="lg:text-right">
                 Takes 60 seconds. No commitment, no calls — just a clean car at your door.
               </p>
-              <a
-                href={BOOKING_URL}
-                className="inline-flex items-center gap-3 px-8 py-4 bg-white text-black font-sans font-[500] text-[0.78rem] tracking-[0.12em] uppercase hover:bg-off-white transition-colors group"
-              >
-                Start My Request
-                <ArrowRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-0.5" />
-              </a>
+              <HoverBtn href={BOOKING_URL} variant="solid">
+                Start My Request <ArrowRight className="w-3.5 h-3.5" style={{ marginLeft: 10 }} />
+              </HoverBtn>
             </div>
           </div>
-
         </div>
       </div>
     </section>
@@ -504,24 +566,83 @@ function CtaBanner() {
 
 function Footer() {
   return (
-    <footer className="border-t border-white/[0.07] bg-[#080808]">
+    <footer style={{ borderTop: `1px solid ${C.border}`, background: C.charcoal }}>
       <div className="mx-auto max-w-7xl px-6 lg:px-10 py-10 flex flex-col md:flex-row items-center justify-between gap-5">
-        <Wordmark size="sm" />
-        <p className="font-sans text-[0.65rem] tracking-[0.1em] text-white/20 uppercase">
-          Serving Solano County + Sacramento · © 2025
+
+        <Wordmark scale={0.85} />
+
+        <p style={{ fontFamily: '"Poppins", sans-serif', fontWeight: 300, fontSize: '0.62rem', letterSpacing: '0.1em', textTransform: 'uppercase', color: 'rgba(166,166,166,0.4)' }}>
+          detaildoor.com · @detaildoor · © 2025
         </p>
-        <div className="flex gap-6">
+
+        <div style={{ display: 'flex', gap: 24 }}>
           {['Privacy', 'Terms'].map(l => (
-            <a
-              key={l}
-              href="#"
-              className="font-sans text-[0.65rem] tracking-[0.08em] uppercase text-white/20 hover:text-white/45 transition-colors"
+            <a key={l} href="#" style={{
+              fontFamily: '"Poppins", sans-serif', fontWeight: 400,
+              fontSize: '0.62rem', letterSpacing: '0.1em',
+              textTransform: 'uppercase', color: 'rgba(166,166,166,0.35)',
+              textDecoration: 'none', transition: 'color 0.2s',
+            }}
+              onMouseEnter={e => (e.currentTarget.style.color = C.silver)}
+              onMouseLeave={e => (e.currentTarget.style.color = 'rgba(166,166,166,0.35)')}
             >
               {l}
             </a>
           ))}
         </div>
+
       </div>
     </footer>
+  )
+}
+
+/* ─── SHARED BUTTON ───────────────────────────────────────────────────────── */
+
+function HoverBtn({
+  href, variant, children, small = false,
+}: {
+  href: string
+  variant: 'solid' | 'ghost'
+  children: React.ReactNode
+  small?: boolean
+}) {
+  const [hovered, setHovered] = useState(false)
+
+  const base: React.CSSProperties = {
+    display: 'inline-flex', alignItems: 'center',
+    fontFamily: '"Poppins", sans-serif',
+    fontWeight: 500,
+    fontSize: small ? '0.7rem' : '0.75rem',
+    letterSpacing: '0.12em',
+    textTransform: 'uppercase',
+    textDecoration: 'none',
+    padding: small ? '10px 18px' : '14px 28px',
+    transition: 'background 0.2s, color 0.2s, border-color 0.2s',
+    cursor: 'pointer',
+  }
+
+  const solid: React.CSSProperties = {
+    ...base,
+    background: hovered ? 'rgba(240,240,240,1)' : C.white,
+    color: C.offBlack,
+    border: `1px solid ${C.white}`,
+  }
+
+  const ghost: React.CSSProperties = {
+    ...base,
+    background: 'transparent',
+    color: hovered ? C.white : C.silver,
+    border: `1px solid ${hovered ? 'rgba(166,166,166,0.45)' : C.border}`,
+  }
+
+  return (
+    <a
+      href={href}
+      style={variant === 'solid' ? solid : ghost}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+    >
+      {children}
+    </a>
   )
 }
