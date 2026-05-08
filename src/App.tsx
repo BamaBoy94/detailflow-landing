@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { Menu, ArrowRight, MapPin, Check, ChevronRight } from 'lucide-react'
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet'
 import { Separator } from '@/components/ui/separator'
+import { Logo } from '@/components/Logo'
 
 const BOOKING_URL = 'https://form.typeform.com/to/CnNOTLPV'
 
@@ -25,34 +26,6 @@ export default function App() {
       <Process />
       <CtaBanner />
       <Footer />
-    </div>
-  )
-}
-
-/* ─── WORDMARK ────────────────────────────────────────────────────────────── */
-
-function Wordmark({ scale = 1 }: { scale?: number }) {
-  return (
-    <div style={{ display: 'flex', flexDirection: 'column', lineHeight: 1, gap: 3 }}>
-      <span style={{
-        fontFamily: '"Poppins", sans-serif',
-        fontWeight: 300,
-        fontSize: `${1.35 * scale}rem`,
-        letterSpacing: '0.02em',
-        color: C.white,
-      }}>
-        detail door
-      </span>
-      <span style={{
-        fontFamily: '"Poppins", sans-serif',
-        fontWeight: 300,
-        fontSize: `${0.52 * scale}rem`,
-        letterSpacing: '0.32em',
-        color: C.silver,
-        textTransform: 'lowercase' as const,
-      }}>
-        clean. delivered.
-      </span>
     </div>
   )
 }
@@ -84,7 +57,7 @@ function Nav() {
       <div className="mx-auto max-w-7xl px-6 lg:px-10 flex items-center justify-between" style={{ height: 72 }}>
 
         <a href="#" style={{ textDecoration: 'none' }}>
-          <Wordmark scale={1} />
+          <Logo scale={1} />
         </a>
 
         {/* Desktop nav */}
@@ -156,7 +129,7 @@ function Nav() {
               style={{ background: C.offBlack, borderLeft: `1px solid ${C.border}` }}
             >
               <div className="flex flex-col h-full pt-8 pb-10 px-4">
-                <Wordmark scale={0.9} />
+                <Logo scale={0.9} />
                 <nav className="flex flex-col gap-0 flex-1 mt-10">
                   {links.map((l, i) => (
                     <div key={l}>
@@ -569,7 +542,7 @@ function Footer() {
     <footer style={{ borderTop: `1px solid ${C.border}`, background: C.charcoal }}>
       <div className="mx-auto max-w-7xl px-6 lg:px-10 py-10 flex flex-col md:flex-row items-center justify-between gap-5">
 
-        <Wordmark scale={0.85} />
+        <Logo scale={0.85} />
 
         <p style={{ fontFamily: '"Poppins", sans-serif', fontWeight: 300, fontSize: '0.62rem', letterSpacing: '0.1em', textTransform: 'uppercase', color: 'rgba(166,166,166,0.4)' }}>
           detaildoor.com · @detaildoor · © 2025
