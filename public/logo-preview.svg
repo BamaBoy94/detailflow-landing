@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 220" role="img" aria-label="detail door — clean. delivered.">
+  <title>detail door — clean. delivered.</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Comfortaa:wght@300;400&amp;display=swap');
+  </style>
+
+  <!-- Black background -->
+  <rect width="900" height="220" fill="#000000"/>
+
+  <defs>
+    <mask id="door-seam-preview">
+      <rect width="900" height="220" fill="white"/>
+      <rect x="599" y="91" width="12" height="38" fill="black"/>
+    </mask>
+  </defs>
+
+  <text
+    x="450" y="135"
+    text-anchor="middle"
+    font-family="'Comfortaa', 'Nunito', 'Varela Round', sans-serif"
+    font-weight="400"
+    font-size="96"
+    letter-spacing="1"
+    fill="#FFFFFF"
+    mask="url(#door-seam-preview)"
+  >detail door</text>
+
+  <circle cx="587" cy="103" r="4" fill="#FFFFFF"/>
+
+  <text
+    x="450" y="181"
+    text-anchor="middle"
+    font-family="'Comfortaa', 'Nunito', 'Varela Round', sans-serif"
+    font-weight="300"
+    font-size="19"
+    letter-spacing="7"
+    fill="#FFFFFF"
+    opacity="0.88"
+  >clean. delivered.</text>
+
+</svg>

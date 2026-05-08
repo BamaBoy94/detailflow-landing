@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 220" role="img" aria-label="detail door — clean. delivered.">
+  <title>detail door — clean. delivered.</title>
+
+  <!--
+    detail door brand logo
+    Font: Comfortaa Regular 400 (load via Google Fonts or @font-face)
+    Door motif: seam + knob on first "o" in "door"
+    Coordinates calibrated for Comfortaa Regular 96px, baseline y=135
+    Adjust SEAM_X (x="599") if misaligned after visual review.
+  -->
+
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Comfortaa:wght@300;400&amp;display=swap');
+  </style>
+
+  <defs>
+    <mask id="door-seam">
+      <rect width="900" height="220" fill="white"/>
+      <!-- Vertical cut through right wall of first "o" in "door" -->
+      <rect x="599" y="91" width="12" height="38" fill="black"/>
+    </mask>
+  </defs>
+
+  <!-- Wordmark -->
+  <text
+    x="450" y="135"
+    text-anchor="middle"
+    font-family="'Comfortaa', 'Nunito', 'Varela Round', sans-serif"
+    font-weight="400"
+    font-size="96"
+    letter-spacing="1"
+    fill="#FFFFFF"
+    mask="url(#door-seam)"
+  >detail door</text>
+
+  <!-- Doorknob -->
+  <circle cx="587" cy="103" r="4" fill="#FFFFFF"/>
+
+  <!-- Tagline -->
+  <text
+    x="450" y="181"
+    text-anchor="middle"
+    font-family="'Comfortaa', 'Nunito', 'Varela Round', sans-serif"
+    font-weight="300"
+    font-size="19"
+    letter-spacing="7"
+    fill="#FFFFFF"
+    opacity="0.88"
+  >clean. delivered.</text>
+
+</svg>
