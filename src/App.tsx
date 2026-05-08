@@ -6,14 +6,22 @@ import { Logo } from '@/components/Logo'
 
 const BOOKING_URL = 'https://form.typeform.com/to/CnNOTLPV'
 
-// ── Brand palette ────────────────────────────────────────────────────────────
 const C = {
   offBlack:  '#0D0D0D',
   charcoal:  '#1A1A1A',
   silver:    '#A6A6A6',
   white:     '#FFFFFF',
-  border:    'rgba(166,166,166,0.15)',   // silver @ 15%
+  border:    'rgba(166,166,166,0.15)',
   borderHi:  'rgba(166,166,166,0.25)',
+}
+
+const label: React.CSSProperties = {
+  fontFamily: '"Poppins", sans-serif',
+  fontWeight: 400,
+  fontSize: '0.6rem',
+  letterSpacing: '0.38em',
+  textTransform: 'uppercase',
+  color: C.silver,
 }
 
 export default function App() {
@@ -22,8 +30,10 @@ export default function App() {
       <Nav />
       <Hero />
       <TrustBar />
+      <BrandStatement />
       <Services />
       <Process />
+      <Testimonials />
       <CtaBanner />
       <Footer />
     </div>
@@ -41,15 +51,16 @@ function Nav() {
     return () => window.removeEventListener('scroll', fn)
   }, [])
 
-  const links = ['Services', 'About', 'Gallery', 'Reviews']
+  const links = ['Services', 'About', 'Reviews', 'Areas']
 
   const headerStyle: React.CSSProperties = {
     position: 'fixed',
     top: 0, left: 0, right: 0,
     zIndex: 50,
-    background: scrolled ? 'rgba(13,13,13,0.97)' : 'transparent',
+    background: scrolled ? 'rgba(13,13,13,0.96)' : 'transparent',
+    backdropFilter: scrolled ? 'blur(12px)' : 'none',
     borderBottom: scrolled ? `1px solid ${C.border}` : '1px solid transparent',
-    transition: 'background 0.3s, border-color 0.3s',
+    transition: 'background 0.35s, border-color 0.35s, backdrop-filter 0.35s',
   }
 
   return (
@@ -60,18 +71,15 @@ function Nav() {
           <Logo scale={1} />
         </a>
 
-        {/* Desktop nav */}
         <nav className="hidden md:flex items-center gap-8 lg:gap-10">
           {links.map(l => (
             <a
               key={l}
               href={`#${l.toLowerCase()}`}
               style={{
-                fontFamily: '"Poppins", sans-serif',
-                fontWeight: 400,
-                fontSize: '0.72rem',
+                ...label,
                 letterSpacing: '0.16em',
-                textTransform: 'uppercase',
+                fontSize: '0.68rem',
                 color: C.silver,
                 textDecoration: 'none',
                 transition: 'color 0.2s',
@@ -84,7 +92,6 @@ function Nav() {
           ))}
         </nav>
 
-        {/* BOOK NOW — rectangular border, matches brand kit exactly */}
         <div className="flex items-center gap-3">
           <a
             href={BOOKING_URL}
@@ -92,7 +99,7 @@ function Nav() {
             style={{
               fontFamily: '"Poppins", sans-serif',
               fontWeight: 500,
-              fontSize: '0.7rem',
+              fontSize: '0.68rem',
               letterSpacing: '0.14em',
               textTransform: 'uppercase',
               color: C.white,
@@ -113,7 +120,6 @@ function Nav() {
             Book Now
           </a>
 
-          {/* Mobile */}
           <Sheet>
             <SheetTrigger asChild>
               <button
@@ -140,7 +146,7 @@ function Nav() {
                           padding: '16px 0',
                           fontFamily: '"Poppins", sans-serif',
                           fontWeight: 400,
-                          fontSize: '0.78rem',
+                          fontSize: '0.75rem',
                           letterSpacing: '0.12em',
                           textTransform: 'uppercase',
                           color: C.silver,
@@ -160,11 +166,11 @@ function Nav() {
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    padding: '12px',
+                    padding: '13px',
                     border: `1px solid ${C.white}`,
                     fontFamily: '"Poppins", sans-serif',
                     fontWeight: 500,
-                    fontSize: '0.72rem',
+                    fontSize: '0.7rem',
                     letterSpacing: '0.14em',
                     textTransform: 'uppercase',
                     color: C.white,
@@ -187,59 +193,87 @@ function Nav() {
 
 function Hero() {
   return (
-    <section style={{ position: 'relative', minHeight: '100svh', display: 'flex', flexDirection: 'column', justifyContent: 'flex-end', overflow: 'hidden', background: C.offBlack }}>
+    <section style={{
+      position: 'relative',
+      minHeight: '100svh',
+      display: 'flex',
+      flexDirection: 'column',
+      justifyContent: 'flex-end',
+      overflow: 'hidden',
+      background: '#0A0A0A',
+    }}>
 
-      {/* Dark cinematic overlay — place full-bleed automotive photo behind this */}
+      {/*
+        ── Photo slot ─────────────────────────────────────────────────────────
+        Swap this div for a full-bleed automotive close-up:
+        deep paint reflection, wheel arch, or interior leather.
+        Suggested: 1920×1080, high contrast, minimal saturation.
+      */}
+      <div style={{ position: 'absolute', inset: 0 }}>
+        {/* Film-grain texture — editorial quality feel */}
+        <svg
+          style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', opacity: 0.055, pointerEvents: 'none' }}
+          aria-hidden="true"
+        >
+          <filter id="grain">
+            <feTurbulence type="fractalNoise" baseFrequency="0.68" numOctaves="4" stitchTiles="stitch" />
+            <feColorMatrix type="saturate" values="0" />
+          </filter>
+          <rect width="100%" height="100%" filter="url(#grain)" />
+        </svg>
+        {/* Subtle vignette for depth when no photo is present */}
+        <div style={{
+          position: 'absolute', inset: 0,
+          background: 'radial-gradient(ellipse 90% 70% at 68% 38%, rgba(28,28,28,0.5) 0%, #0A0A0A 75%)',
+        }} />
+      </div>
+
+      {/* Cinematic overlay — works with or without photo */}
       <div style={{
-        position: 'absolute', inset: 0, zIndex: 1,
+        position: 'absolute', inset: 0, zIndex: 2,
         background: [
-          'linear-gradient(to bottom, rgba(13,13,13,0.6) 0%, rgba(13,13,13,0) 25%, rgba(13,13,13,0.65) 65%, rgba(13,13,13,0.98) 100%)',
-          'linear-gradient(to right, rgba(13,13,13,0.75) 0%, rgba(13,13,13,0.1) 60%)',
+          'linear-gradient(to bottom, rgba(10,10,10,0.5) 0%, transparent 22%, rgba(10,10,10,0.55) 60%, rgba(10,10,10,0.98) 100%)',
+          'linear-gradient(to right, rgba(10,10,10,0.82) 0%, rgba(10,10,10,0.1) 65%)',
         ].join(', '),
       }} />
 
-      {/* Texture placeholder — swap for glossy automotive photo */}
-      <div style={{
-        position: 'absolute', inset: 0, background: '#111111',
-        backgroundImage: `
-          radial-gradient(ellipse 85% 65% at 72% 42%, rgba(255,255,255,0.03) 0%, transparent 65%),
-          repeating-linear-gradient(-50deg, transparent, transparent 55px, rgba(255,255,255,0.007) 55px, rgba(255,255,255,0.007) 56px)
-        `,
-      }} />
-
-      <div className="relative mx-auto max-w-7xl px-6 lg:px-10 pb-24 pt-40 w-full" style={{ zIndex: 2 }}>
-        <div style={{ maxWidth: 560 }}>
+      <div className="relative mx-auto max-w-7xl px-6 lg:px-10 pb-28 pt-44 w-full" style={{ zIndex: 3 }}>
+        <div style={{ maxWidth: 580 }}>
 
           <p style={{
-            fontFamily: '"Poppins", sans-serif', fontWeight: 400,
-            fontSize: '0.65rem', letterSpacing: '0.38em',
-            textTransform: 'uppercase', color: C.silver,
-            marginBottom: 28, animation: 'fadeUp 0.5s ease both 0.05s',
+            ...label,
+            letterSpacing: '0.42em',
+            marginBottom: 32,
+            animation: 'fadeUp 0.5s ease both 0.05s',
           }}>
-            Mobile · Solano County · Sacramento
+            Mobile Detailing · Solano County · Sacramento
           </p>
 
-          {/* Hero headline — brand tagline at display scale */}
           <h1 style={{
             fontFamily: '"Poppins", sans-serif',
             fontWeight: 600,
-            fontSize: 'clamp(4.2rem, 13vw, 9.5rem)',
-            lineHeight: 0.92,
-            letterSpacing: '-0.02em',
+            fontSize: 'clamp(4.4rem, 13vw, 9.5rem)',
+            lineHeight: 0.91,
+            letterSpacing: '-0.025em',
             color: C.white,
-            marginBottom: 28,
+            marginBottom: 36,
             animation: 'fadeUp 0.55s ease both 0.15s',
           }}>
             clean.<br />delivered.
           </h1>
 
           <p style={{
-            fontFamily: '"Poppins", sans-serif', fontWeight: 300,
-            fontSize: '0.95rem', lineHeight: 1.85,
-            color: C.silver, maxWidth: 320,
-            marginBottom: 40, animation: 'fadeUp 0.55s ease both 0.28s',
+            fontFamily: '"Poppins", sans-serif',
+            fontWeight: 300,
+            fontSize: '0.975rem',
+            lineHeight: 1.95,
+            color: C.silver,
+            maxWidth: 360,
+            marginBottom: 44,
+            animation: 'fadeUp 0.55s ease both 0.28s',
           }}>
-            Book a mobile detail in 60 seconds. A vetted pro arrives at your door — no shop, no hassle.
+            Fully equipped. Independently vetted. At your door within the day.
+            This is how car care should work.
           </p>
 
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: 12, animation: 'fadeUp 0.55s ease both 0.38s' }}>
@@ -247,7 +281,7 @@ function Hero() {
               Book My Detail <ArrowRight className="w-3.5 h-3.5" style={{ marginLeft: 10 }} />
             </HoverBtn>
             <HoverBtn href="#services" variant="ghost">
-              See services
+              View services
             </HoverBtn>
           </div>
 
@@ -261,9 +295,9 @@ function Hero() {
 
 function TrustBar() {
   const stats = [
-    { value: '60s',  label: 'Average booking time' },
+    { value: '60s',  label: 'Time to book' },
+    { value: '100%', label: 'Mobile — no shop required' },
     { value: '5+',   label: 'Service areas' },
-    { value: '100%', label: 'Mobile — we come to you' },
   ]
   return (
     <div style={{ borderTop: `1px solid ${C.border}`, borderBottom: `1px solid ${C.border}`, background: C.charcoal }}>
@@ -273,23 +307,22 @@ function TrustBar() {
             <div
               key={s.label}
               style={{
-                padding: '36px 24px',
+                padding: '40px 28px',
                 textAlign: 'center',
                 borderRight: i < stats.length - 1 ? `1px solid ${C.border}` : 'none',
               }}
             >
               <div style={{
-                fontFamily: '"Poppins", sans-serif', fontWeight: 300,
+                fontFamily: '"Poppins", sans-serif',
+                fontWeight: 300,
                 fontSize: 'clamp(2rem, 5vw, 2.8rem)',
-                color: C.white, lineHeight: 1, marginBottom: 6,
+                color: C.white,
+                lineHeight: 1,
+                marginBottom: 8,
               }}>
                 {s.value}
               </div>
-              <div style={{
-                fontFamily: '"Poppins", sans-serif', fontWeight: 400,
-                fontSize: '0.62rem', letterSpacing: '0.22em',
-                textTransform: 'uppercase', color: C.silver,
-              }}>
+              <div style={{ ...label, letterSpacing: '0.22em', fontSize: '0.6rem' }}>
                 {s.label}
               </div>
             </div>
@@ -300,91 +333,191 @@ function TrustBar() {
   )
 }
 
+/* ─── BRAND STATEMENT ─────────────────────────────────────────────────────── */
+
+function BrandStatement() {
+  return (
+    <section style={{ padding: '100px 0 96px', background: C.offBlack, borderBottom: `1px solid ${C.border}` }}>
+      <div className="mx-auto max-w-6xl px-6 lg:px-10">
+        <div className="grid lg:grid-cols-12 gap-12 lg:gap-20 items-start">
+
+          <div className="lg:col-span-4">
+            <span style={{ ...label, marginBottom: 20, display: 'block' }}>
+              Why Detail Door
+            </span>
+            <div style={{ height: 1, width: 36, background: C.border }} />
+          </div>
+
+          <div className="lg:col-span-8">
+            <p style={{
+              fontFamily: '"Poppins", sans-serif',
+              fontWeight: 300,
+              fontSize: 'clamp(1rem, 1.9vw, 1.22rem)',
+              lineHeight: 2,
+              color: C.silver,
+              marginBottom: 32,
+            }}>
+              We built Detail Door because quality car care shouldn't require a trip
+              across town and an afternoon in a waiting room. Every detailer on our
+              platform is vetted, background-checked, and fully equipped. Every service
+              is priced clearly upfront.
+            </p>
+            <p style={{
+              fontFamily: '"Poppins", sans-serif',
+              fontWeight: 300,
+              fontSize: 'clamp(1rem, 1.9vw, 1.22rem)',
+              lineHeight: 2,
+              color: 'rgba(166,166,166,0.55)',
+            }}>
+              No surprises at the end. No upselling in the middle.
+              Just a clean car at your door.
+            </p>
+          </div>
+
+        </div>
+      </div>
+    </section>
+  )
+}
+
 /* ─── SERVICES ────────────────────────────────────────────────────────────── */
 
 function Services() {
   const services = [
     {
-      number: '01',
-      name: 'Exterior Detail',
+      tag: '01',
+      name: 'Exterior',
       tagline: 'Paint-perfect finish',
-      description: 'Hand wash, clay bar, tire dressing, window polish. Every panel treated like it just left the showroom.',
-      items: ['Hand wash & dry', 'Clay bar decontamination', 'Tire & trim dressing', 'Window polish'],
+      description: 'Every panel hand-washed and clay-decontaminated. Windows polished. Tires and trim dressed. We treat your paint the way it deserves to be treated.',
+      items: ['Hand wash & hand dry', 'Clay bar decontamination', 'Window & glass polish', 'Tire & trim dressing'],
     },
     {
-      number: '02',
-      name: 'Interior Detail',
-      tagline: 'Clean inside out',
-      description: 'Deep vacuum, surface wipe-down, leather conditioning, odor elimination. Factory-fresh from top to bottom.',
-      items: ['Deep vacuum', 'Leather conditioning', 'Dashboard & console wipe', 'Odor treatment'],
+      tag: '02',
+      name: 'Interior',
+      tagline: 'Factory-clean, every time',
+      description: 'Thorough vacuum, every surface wiped, leather conditioned, odors addressed at the source. You get in and it feels like day one.',
+      items: ['Full deep vacuum', 'Dashboard & console detail', 'Leather conditioning', 'Odor treatment'],
     },
     {
-      number: '03',
+      tag: '03',
       name: 'Full Detail',
-      tagline: 'The complete service',
-      description: 'Everything inside and out. Our most thorough package — the one you bring out for special occasions.',
-      items: ['Complete exterior detail', 'Complete interior detail', 'Engine bay wipe-down', 'Sealant protection'],
+      tagline: 'The complete treatment',
+      description: 'Inside, outside, and everything between. For the car you take care of, or the one that needs it most. The standard for how your car should look.',
+      items: ['Complete exterior detail', 'Complete interior detail', 'Engine bay wipe-down', 'Paint sealant protection'],
       featured: true,
     },
   ]
 
   return (
-    <section id="services" style={{ padding: '120px 0', background: C.offBlack }}>
+    <section id="services" style={{ padding: '128px 0 112px', background: C.offBlack }}>
       <div className="mx-auto max-w-7xl px-6 lg:px-10">
 
-        <div style={{ marginBottom: 64 }}>
-          <p style={{ fontFamily: '"Poppins", sans-serif', fontWeight: 400, fontSize: '0.62rem', letterSpacing: '0.32em', textTransform: 'uppercase', color: C.silver, marginBottom: 16 }}>
-            What we offer
+        <div style={{
+          display: 'flex',
+          alignItems: 'flex-end',
+          justifyContent: 'space-between',
+          flexWrap: 'wrap',
+          gap: 20,
+          marginBottom: 64,
+        }}>
+          <div>
+            <p style={{ ...label, marginBottom: 14 }}>What we offer</p>
+            <h2 style={{
+              fontFamily: '"Poppins", sans-serif',
+              fontWeight: 600,
+              fontSize: 'clamp(2.8rem, 7vw, 5rem)',
+              color: C.white,
+              lineHeight: 0.93,
+              letterSpacing: '-0.025em',
+            }}>
+              Services
+            </h2>
+          </div>
+          <p style={{
+            fontFamily: '"Poppins", sans-serif',
+            fontWeight: 300,
+            fontSize: '0.82rem',
+            lineHeight: 1.8,
+            color: 'rgba(166,166,166,0.6)',
+            maxWidth: 240,
+          }}>
+            All services include equipment, products, and cleanup. Nothing extra.
           </p>
-          <h2 style={{ fontFamily: '"Poppins", sans-serif', fontWeight: 600, fontSize: 'clamp(2.5rem, 7vw, 5rem)', color: C.white, lineHeight: 0.95, letterSpacing: '-0.02em' }}>
-            Services
-          </h2>
         </div>
 
-        <div className="grid lg:grid-cols-3" style={{ border: `1px solid ${C.border}` }}>
+        <div className="grid lg:grid-cols-3">
           {services.map((s, i) => (
             <div
-              key={s.number}
+              key={s.tag}
               style={{
-                display: 'flex', flexDirection: 'column',
-                padding: '40px 36px',
-                background: s.featured ? C.charcoal : C.offBlack,
-                borderRight: i < services.length - 1 ? `1px solid ${C.border}` : 'none',
+                display: 'flex',
+                flexDirection: 'column',
+                padding: '44px 40px 40px',
+                background: s.featured ? C.charcoal : 'transparent',
+                borderTop: `1px solid ${s.featured ? C.borderHi : C.border}`,
+                borderLeft: i > 0 ? `1px solid ${C.border}` : 'none',
                 position: 'relative',
               }}
             >
               {s.featured && (
                 <span style={{
                   position: 'absolute', top: 24, right: 24,
-                  fontFamily: '"Poppins", sans-serif', fontWeight: 400,
-                  fontSize: '0.58rem', letterSpacing: '0.18em',
-                  textTransform: 'uppercase', color: C.silver,
+                  ...label,
+                  fontSize: '0.55rem',
+                  letterSpacing: '0.2em',
                   border: `1px solid ${C.border}`,
-                  padding: '4px 12px',
+                  padding: '4px 10px',
                 }}>
                   Most popular
                 </span>
               )}
 
-              <span style={{ fontFamily: '"Poppins", sans-serif', fontWeight: 300, fontSize: '3.5rem', color: 'rgba(166,166,166,0.1)', lineHeight: 1, marginBottom: 24, userSelect: 'none' }}>
-                {s.number}
+              <span style={{
+                ...label,
+                fontSize: '0.58rem',
+                letterSpacing: '0.3em',
+                color: 'rgba(166,166,166,0.28)',
+                marginBottom: 28,
+              }}>
+                {s.tag}
               </span>
 
-              <h3 style={{ fontFamily: '"Poppins", sans-serif', fontWeight: 500, fontSize: '1.4rem', color: C.white, marginBottom: 4 }}>
+              <h3 style={{
+                fontFamily: '"Poppins", sans-serif',
+                fontWeight: 500,
+                fontSize: '1.45rem',
+                color: C.white,
+                marginBottom: 6,
+              }}>
                 {s.name}
               </h3>
-              <p style={{ fontFamily: '"Poppins", sans-serif', fontWeight: 400, fontSize: '0.6rem', letterSpacing: '0.22em', textTransform: 'uppercase', color: C.silver, marginBottom: 20 }}>
+              <p style={{ ...label, letterSpacing: '0.2em', marginBottom: 24 }}>
                 {s.tagline}
               </p>
-              <p style={{ fontFamily: '"Poppins", sans-serif', fontWeight: 300, fontSize: '0.85rem', lineHeight: 1.85, color: C.silver, marginBottom: 28, flex: 1 }}>
+              <p style={{
+                fontFamily: '"Poppins", sans-serif',
+                fontWeight: 300,
+                fontSize: '0.85rem',
+                lineHeight: 1.9,
+                color: C.silver,
+                marginBottom: 32,
+                flex: 1,
+              }}>
                 {s.description}
               </p>
 
-              <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: 10, marginBottom: 28 }}>
+              <div style={{ height: 1, background: C.border, marginBottom: 24 }} />
+
+              <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: 11, marginBottom: 32 }}>
                 {s.items.map(item => (
-                  <li key={item} style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-                    <Check style={{ width: 12, height: 12, color: C.silver, flexShrink: 0 }} strokeWidth={2} />
-                    <span style={{ fontFamily: '"Poppins", sans-serif', fontWeight: 300, fontSize: '0.82rem', color: C.silver }}>
+                  <li key={item} style={{ display: 'flex', alignItems: 'center', gap: 11 }}>
+                    <Check style={{ width: 11, height: 11, color: 'rgba(166,166,166,0.45)', flexShrink: 0 }} strokeWidth={2.5} />
+                    <span style={{
+                      fontFamily: '"Poppins", sans-serif',
+                      fontWeight: 300,
+                      fontSize: '0.82rem',
+                      color: C.silver,
+                    }}>
                       {item}
                     </span>
                   </li>
@@ -409,50 +542,96 @@ function Process() {
   const steps = [
     {
       n: '01',
-      title: 'Fill out the form',
-      body: 'Answer a few quick questions about your vehicle, location, and the service you need. Under 60 seconds.',
+      title: 'Tell us about your car',
+      body: 'Two minutes. Your vehicle, location, and the service you need. No account required — just the essentials.',
     },
     {
       n: '02',
-      title: 'We match you instantly',
-      body: 'Our system routes your request to a vetted detailer in your area — no back-and-forth, no calls.',
+      title: 'We find your detailer',
+      body: 'Your request goes to a vetted professional in your area. No bidding, no callbacks, no negotiating. A confirmation arrives instead.',
     },
     {
       n: '03',
-      title: 'They come to you',
-      body: 'Your detailer arrives at your home, office, or wherever works. You wait for clean.',
+      title: 'They arrive. You don\'t move.',
+      body: 'Your detailer shows up fully equipped — at home, at work, wherever works. You stay where you are. The car gets taken care of.',
     },
   ]
 
   return (
-    <section id="about" style={{ padding: '120px 0', background: C.charcoal }}>
+    <section id="about" style={{ padding: '128px 0 120px', background: C.charcoal }}>
       <div className="mx-auto max-w-7xl px-6 lg:px-10">
-        <div className="grid lg:grid-cols-2 gap-16 lg:gap-28 items-start">
+        <div className="grid lg:grid-cols-2 gap-16 lg:gap-32 items-start">
 
           <div className="lg:sticky lg:top-28">
-            <p style={{ fontFamily: '"Poppins", sans-serif', fontWeight: 400, fontSize: '0.62rem', letterSpacing: '0.32em', textTransform: 'uppercase', color: C.silver, marginBottom: 16 }}>
-              Simple process
-            </p>
-            <h2 style={{ fontFamily: '"Poppins", sans-serif', fontWeight: 600, fontSize: 'clamp(2.5rem, 7vw, 4.5rem)', color: C.white, lineHeight: 0.95, letterSpacing: '-0.02em', marginBottom: 24 }}>
-              Three steps.<br />Zero hassle.
+            <p style={{ ...label, marginBottom: 18 }}>How it works</p>
+            <h2 style={{
+              fontFamily: '"Poppins", sans-serif',
+              fontWeight: 600,
+              fontSize: 'clamp(2.8rem, 7vw, 4.8rem)',
+              color: C.white,
+              lineHeight: 0.93,
+              letterSpacing: '-0.025em',
+              marginBottom: 28,
+            }}>
+              Three steps.<br />Zero friction.
             </h2>
-            <p style={{ fontFamily: '"Poppins", sans-serif', fontWeight: 300, fontSize: '0.875rem', lineHeight: 1.85, color: C.silver, maxWidth: 300 }}>
-              We built the booking flow so you spend less time arranging and more time driving a clean car.
+            <p style={{
+              fontFamily: '"Poppins", sans-serif',
+              fontWeight: 300,
+              fontSize: '0.875rem',
+              lineHeight: 1.95,
+              color: C.silver,
+              maxWidth: 300,
+              marginBottom: 40,
+            }}>
+              We designed the booking flow to get out of your way. Two minutes
+              from start to confirmation — then just wait for clean.
+            </p>
+            <p style={{
+              fontFamily: '"Poppins", sans-serif',
+              fontWeight: 400,
+              fontSize: '0.7rem',
+              letterSpacing: '0.1em',
+              color: 'rgba(166,166,166,0.45)',
+              textTransform: 'uppercase',
+            }}>
+              No hidden fees. No upselling.
             </p>
           </div>
 
           <div>
             {steps.map((s, i) => (
               <div key={s.n}>
-                <div style={{ display: 'flex', gap: 28, padding: '36px 0' }}>
-                  <span style={{ fontFamily: '"Poppins", sans-serif', fontWeight: 300, fontSize: '2rem', color: 'rgba(166,166,166,0.18)', lineHeight: 1, minWidth: '2.5rem', paddingTop: 2, userSelect: 'none' }}>
+                <div style={{ display: 'flex', gap: 28, padding: '40px 0' }}>
+                  <span style={{
+                    fontFamily: '"Poppins", sans-serif',
+                    fontWeight: 300,
+                    fontSize: '1.9rem',
+                    color: 'rgba(166,166,166,0.16)',
+                    lineHeight: 1,
+                    minWidth: '2.4rem',
+                    paddingTop: 3,
+                    userSelect: 'none',
+                  }}>
                     {s.n}
                   </span>
                   <div>
-                    <h3 style={{ fontFamily: '"Poppins", sans-serif', fontWeight: 500, fontSize: '0.95rem', color: C.white, marginBottom: 10 }}>
+                    <h3 style={{
+                      fontFamily: '"Poppins", sans-serif',
+                      fontWeight: 500,
+                      fontSize: '0.98rem',
+                      color: C.white,
+                      marginBottom: 12,
+                    }}>
                       {s.title}
                     </h3>
-                    <p style={{ fontFamily: '"Poppins", sans-serif', fontWeight: 300, fontSize: '0.85rem', lineHeight: 1.85, color: C.silver }}>
+                    <p style={{
+                      fontFamily: '"Poppins", sans-serif',
+                      fontWeight: 300,
+                      fontSize: '0.85rem',
+                      lineHeight: 1.9,
+                      color: C.silver,
+                    }}>
                       {s.body}
                     </p>
                   </div>
@@ -468,51 +647,170 @@ function Process() {
   )
 }
 
+/* ─── TESTIMONIALS ────────────────────────────────────────────────────────── */
+
+function Testimonials() {
+  const reviews = [
+    {
+      text: 'Booked it Tuesday morning. By noon my car looked like I\'d just picked it up from the dealership. I haven\'t been to a detail shop since.',
+      name: 'Marcus L.',
+      location: 'Sacramento, CA',
+    },
+    {
+      text: 'I\'ve had mobile details before. Detail Door is the only one that felt like a real service company — showed up on time, fully equipped, no surprises on the invoice.',
+      name: 'Stephanie K.',
+      location: 'Vacaville, CA',
+    },
+    {
+      text: 'Sixty seconds to book, two hours to complete. My car hasn\'t looked this good since I drove it off the lot. Simple.',
+      name: 'Daniel P.',
+      location: 'Fairfield, CA',
+    },
+  ]
+
+  return (
+    <section id="reviews" style={{ padding: '128px 0 112px', background: C.offBlack }}>
+      <div className="mx-auto max-w-7xl px-6 lg:px-10">
+
+        <div style={{ marginBottom: 64 }}>
+          <p style={{ ...label, marginBottom: 14 }}>From our customers</p>
+          <h2 style={{
+            fontFamily: '"Poppins", sans-serif',
+            fontWeight: 600,
+            fontSize: 'clamp(2.8rem, 7vw, 5rem)',
+            color: C.white,
+            lineHeight: 0.93,
+            letterSpacing: '-0.025em',
+          }}>
+            Reviews
+          </h2>
+        </div>
+
+        <div className="grid lg:grid-cols-3" style={{ borderTop: `1px solid ${C.border}` }}>
+          {reviews.map((r, i) => (
+            <div
+              key={i}
+              style={{
+                display: 'flex',
+                flexDirection: 'column',
+                padding: '44px 36px 40px',
+                borderLeft: i > 0 ? `1px solid ${C.border}` : 'none',
+              }}
+            >
+              <span style={{
+                fontFamily: '"Poppins", sans-serif',
+                fontWeight: 300,
+                fontSize: '3rem',
+                color: 'rgba(166,166,166,0.13)',
+                lineHeight: 1,
+                marginBottom: 20,
+                userSelect: 'none',
+              }}>
+                "
+              </span>
+              <p style={{
+                fontFamily: '"Poppins", sans-serif',
+                fontWeight: 300,
+                fontSize: '0.9rem',
+                lineHeight: 1.95,
+                color: C.silver,
+                marginBottom: 32,
+                flex: 1,
+              }}>
+                {r.text}
+              </p>
+              <div style={{ height: 1, background: C.border, marginBottom: 20 }} />
+              <p style={{
+                fontFamily: '"Poppins", sans-serif',
+                fontWeight: 500,
+                fontSize: '0.68rem',
+                letterSpacing: '0.13em',
+                textTransform: 'uppercase',
+                color: C.white,
+                marginBottom: 4,
+              }}>
+                {r.name}
+              </p>
+              <p style={{
+                ...label,
+                fontSize: '0.58rem',
+                color: 'rgba(166,166,166,0.45)',
+              }}>
+                {r.location}
+              </p>
+            </div>
+          ))}
+        </div>
+
+      </div>
+    </section>
+  )
+}
+
 /* ─── CTA BANNER ──────────────────────────────────────────────────────────── */
 
 function CtaBanner() {
   const areas = ['Dixon', 'Fairfield', 'Vacaville', 'Suisun City', 'Sacramento']
 
   return (
-    <section id="gallery" style={{ padding: '120px 0', background: C.offBlack }}>
+    <section id="areas" style={{ padding: '0 0 128px', background: C.offBlack }}>
       <div className="mx-auto max-w-7xl px-6 lg:px-10">
         <div style={{
           position: 'relative',
           border: `1px solid ${C.border}`,
           background: C.charcoal,
-          padding: 'clamp(40px, 6vw, 72px)',
+          padding: 'clamp(44px, 6vw, 80px)',
           overflow: 'hidden',
         }}>
           <div style={{
             position: 'absolute', inset: 0, pointerEvents: 'none',
-            background: 'radial-gradient(ellipse 50% 70% at 85% 50%, rgba(166,166,166,0.04) 0%, transparent 65%)',
+            background: 'radial-gradient(ellipse 55% 80% at 88% 50%, rgba(166,166,166,0.03) 0%, transparent 65%)',
           }} />
 
-          <div className="relative grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+          <div className="relative grid lg:grid-cols-2 gap-12 lg:gap-24 items-center">
             <div>
               <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 28 }}>
-                <MapPin style={{ width: 14, height: 14, color: C.silver }} />
-                <span style={{ fontFamily: '"Poppins", sans-serif', fontWeight: 400, fontSize: '0.62rem', letterSpacing: '0.28em', textTransform: 'uppercase', color: C.silver }}>
+                <MapPin style={{ width: 13, height: 13, color: 'rgba(166,166,166,0.5)' }} />
+                <span style={{ ...label, letterSpacing: '0.28em', fontSize: '0.6rem' }}>
                   Serving your area
                 </span>
               </div>
 
-              <h2 style={{ fontFamily: '"Poppins", sans-serif', fontWeight: 600, fontSize: 'clamp(2.2rem, 6vw, 4rem)', color: C.white, lineHeight: 0.95, letterSpacing: '-0.02em', marginBottom: 20 }}>
+              <h2 style={{
+                fontFamily: '"Poppins", sans-serif',
+                fontWeight: 600,
+                fontSize: 'clamp(2.4rem, 6vw, 4.2rem)',
+                color: C.white,
+                lineHeight: 0.93,
+                letterSpacing: '-0.025em',
+                marginBottom: 24,
+              }}>
                 Your driveway<br />is our shop.
               </h2>
 
-              <p style={{ fontFamily: '"Poppins", sans-serif', fontWeight: 300, fontSize: '0.875rem', lineHeight: 1.85, color: C.silver, maxWidth: 320, marginBottom: 28 }}>
-                Connecting customers with mobile detailers across Solano County and Greater Sacramento.
+              <p style={{
+                fontFamily: '"Poppins", sans-serif',
+                fontWeight: 300,
+                fontSize: '0.875rem',
+                lineHeight: 1.9,
+                color: C.silver,
+                maxWidth: 340,
+                marginBottom: 28,
+              }}>
+                We connect you with mobile detailers across Solano County
+                and Greater Sacramento. Priced clearly. Arrive fully equipped.
               </p>
 
-              <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }} id="reviews">
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
                 {areas.map(a => (
                   <span key={a} style={{
-                    fontFamily: '"Poppins", sans-serif', fontWeight: 400,
-                    fontSize: '0.65rem', letterSpacing: '0.08em',
+                    fontFamily: '"Poppins", sans-serif',
+                    fontWeight: 400,
+                    fontSize: '0.63rem',
+                    letterSpacing: '0.08em',
                     padding: '6px 14px',
                     border: `1px solid ${C.border}`,
-                    color: C.silver,
+                    color: 'rgba(166,166,166,0.65)',
                   }}>
                     {a}
                   </span>
@@ -520,12 +818,24 @@ function CtaBanner() {
               </div>
             </div>
 
-            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: 20 }} className="lg:items-end">
-              <p style={{ fontFamily: '"Poppins", sans-serif', fontWeight: 300, fontSize: '0.8rem', lineHeight: 1.85, color: C.silver, maxWidth: 220 }} className="lg:text-right">
-                Takes 60 seconds. No commitment, no calls — just a clean car at your door.
+            <div
+              style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: 24 }}
+              className="lg:items-end"
+            >
+              <p style={{
+                fontFamily: '"Poppins", sans-serif',
+                fontWeight: 300,
+                fontSize: '0.82rem',
+                lineHeight: 1.9,
+                color: 'rgba(166,166,166,0.6)',
+                maxWidth: 220,
+              }}
+                className="lg:text-right"
+              >
+                Two minutes to book. Done within the day. No commitment, no calls.
               </p>
               <HoverBtn href={BOOKING_URL} variant="solid">
-                Start My Request <ArrowRight className="w-3.5 h-3.5" style={{ marginLeft: 10 }} />
+                Book My Detail <ArrowRight className="w-3.5 h-3.5" style={{ marginLeft: 10 }} />
               </HoverBtn>
             </div>
           </div>
@@ -540,26 +850,45 @@ function CtaBanner() {
 function Footer() {
   return (
     <footer style={{ borderTop: `1px solid ${C.border}`, background: C.charcoal }}>
-      <div className="mx-auto max-w-7xl px-6 lg:px-10 py-10 flex flex-col md:flex-row items-center justify-between gap-5">
+      <div className="mx-auto max-w-7xl px-6 lg:px-10 py-12 grid md:grid-cols-3 items-center gap-6">
 
         <Logo scale={0.85} />
 
-        <p style={{ fontFamily: '"Poppins", sans-serif', fontWeight: 300, fontSize: '0.62rem', letterSpacing: '0.1em', textTransform: 'uppercase', color: 'rgba(166,166,166,0.4)' }}>
-          detaildoor.com · @detaildoor · © 2025
+        <p style={{
+          fontFamily: '"Poppins", sans-serif',
+          fontWeight: 300,
+          fontSize: '0.6rem',
+          letterSpacing: '0.14em',
+          textTransform: 'uppercase',
+          color: 'rgba(166,166,166,0.35)',
+          textAlign: 'center',
+        }}>
+          © 2025 Detail Door · detaildoor.com
         </p>
 
-        <div style={{ display: 'flex', gap: 24 }}>
-          {['Privacy', 'Terms'].map(l => (
-            <a key={l} href="#" style={{
-              fontFamily: '"Poppins", sans-serif', fontWeight: 400,
-              fontSize: '0.62rem', letterSpacing: '0.1em',
-              textTransform: 'uppercase', color: 'rgba(166,166,166,0.35)',
-              textDecoration: 'none', transition: 'color 0.2s',
-            }}
+        <div style={{ display: 'flex', gap: 24, justifyContent: 'flex-end' }}>
+          {[
+            { text: 'Instagram', href: 'https://instagram.com/detaildoor' },
+            { text: 'Privacy', href: '#' },
+            { text: 'Terms', href: '#' },
+          ].map(l => (
+            <a
+              key={l.text}
+              href={l.href}
+              style={{
+                fontFamily: '"Poppins", sans-serif',
+                fontWeight: 400,
+                fontSize: '0.6rem',
+                letterSpacing: '0.1em',
+                textTransform: 'uppercase',
+                color: 'rgba(166,166,166,0.32)',
+                textDecoration: 'none',
+                transition: 'color 0.2s',
+              }}
               onMouseEnter={e => (e.currentTarget.style.color = C.silver)}
-              onMouseLeave={e => (e.currentTarget.style.color = 'rgba(166,166,166,0.35)')}
+              onMouseLeave={e => (e.currentTarget.style.color = 'rgba(166,166,166,0.32)')}
             >
-              {l}
+              {l.text}
             </a>
           ))}
         </div>
