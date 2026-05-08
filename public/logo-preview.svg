@@ -4,15 +4,7 @@
     @import url('https://fonts.googleapis.com/css2?family=Comfortaa:wght@300;400&amp;display=swap');
   </style>
 
-  <!-- Black background -->
   <rect width="900" height="220" fill="#000000"/>
-
-  <defs>
-    <mask id="door-seam-preview">
-      <rect width="900" height="220" fill="white"/>
-      <rect x="599" y="91" width="12" height="38" fill="black"/>
-    </mask>
-  </defs>
 
   <text
     x="450" y="135"
@@ -22,10 +14,10 @@
     font-size="96"
     letter-spacing="1"
     fill="#FFFFFF"
-    mask="url(#door-seam-preview)"
   >detail door</text>
 
-  <circle cx="587" cy="103" r="4" fill="#FFFFFF"/>
+  <rect x="597" y="96" width="3" height="28" fill="#FFFFFF"/>
+  <rect x="588" y="106" width="5" height="5" rx="1" fill="#FFFFFF"/>
 
   <text
     x="450" y="181"
