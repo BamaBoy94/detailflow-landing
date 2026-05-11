@@ -51,7 +51,7 @@ function Nav() {
     return () => window.removeEventListener('scroll', fn)
   }, [])
 
-  const links = ['Services', 'About', 'Reviews', 'Areas']
+  const links = ['Services', 'About', 'Reviews', 'Coverage']
 
   const headerStyle: React.CSSProperties = {
     position: 'fixed',
@@ -75,7 +75,7 @@ function Nav() {
           {links.map(l => (
             <a
               key={l}
-              href={`#${l.toLowerCase()}`}
+              href={`#${l === 'Coverage' ? 'coverage' : l.toLowerCase()}`}
               style={{
                 ...label,
                 letterSpacing: '0.16em',
@@ -140,7 +140,7 @@ function Nav() {
                   {links.map((l, i) => (
                     <div key={l}>
                       <a
-                        href={`#${l.toLowerCase()}`}
+                        href={`#${l === 'Coverage' ? 'coverage' : l.toLowerCase()}`}
                         style={{
                           display: 'block',
                           padding: '16px 0',
@@ -246,7 +246,7 @@ function Hero() {
             marginBottom: 32,
             animation: 'fadeUp 0.5s ease both 0.05s',
           }}>
-            Mobile Detailing · Solano County · Sacramento
+            Professional Mobile Detailing · Nationwide
           </p>
 
           <h1 style={{
@@ -297,7 +297,7 @@ function TrustBar() {
   const stats = [
     { value: '60s',  label: 'Time to book' },
     { value: '100%', label: 'Mobile — no shop required' },
-    { value: '5+',   label: 'Service areas' },
+    { value: '50+',  label: 'Cities & growing' },
   ]
   return (
     <div style={{ borderTop: `1px solid ${C.border}`, borderBottom: `1px solid ${C.border}`, background: C.charcoal }}>
@@ -654,17 +654,17 @@ function Testimonials() {
     {
       text: 'Booked it Tuesday morning. By noon my car looked like I\'d just picked it up from the dealership. I haven\'t been to a detail shop since.',
       name: 'Marcus L.',
-      location: 'Sacramento, CA',
+      location: 'Atlanta, GA',
     },
     {
       text: 'I\'ve had mobile details before. Detail Door is the only one that felt like a real service company — showed up on time, fully equipped, no surprises on the invoice.',
       name: 'Stephanie K.',
-      location: 'Vacaville, CA',
+      location: 'Charlotte, NC',
     },
     {
       text: 'Sixty seconds to book, two hours to complete. My car hasn\'t looked this good since I drove it off the lot. Simple.',
       name: 'Daniel P.',
-      location: 'Fairfield, CA',
+      location: 'Brooklyn, NY',
     },
   ]
 
@@ -750,10 +750,10 @@ function Testimonials() {
 /* ─── CTA BANNER ──────────────────────────────────────────────────────────── */
 
 function CtaBanner() {
-  const areas = ['Dixon', 'Fairfield', 'Vacaville', 'Suisun City', 'Sacramento']
+  const metros = ['New York', 'Atlanta', 'Charlotte', 'Miami', 'Washington D.C.', 'Nashville']
 
   return (
-    <section id="areas" style={{ padding: '0 0 128px', background: C.offBlack }}>
+    <section id="coverage" style={{ padding: '0 0 128px', background: C.offBlack }}>
       <div className="mx-auto max-w-7xl px-6 lg:px-10">
         <div style={{
           position: 'relative',
@@ -772,7 +772,7 @@ function CtaBanner() {
               <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 28 }}>
                 <MapPin style={{ width: 13, height: 13, color: 'rgba(166,166,166,0.5)' }} />
                 <span style={{ ...label, letterSpacing: '0.28em', fontSize: '0.6rem' }}>
-                  Serving your area
+                  Available nationwide
                 </span>
               </div>
 
@@ -797,12 +797,12 @@ function CtaBanner() {
                 maxWidth: 340,
                 marginBottom: 28,
               }}>
-                We connect you with mobile detailers across Solano County
-                and Greater Sacramento. Priced clearly. Arrive fully equipped.
+                We connect you with vetted mobile detailers wherever you are.
+                Priced clearly. Arrive fully equipped.
               </p>
 
               <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
-                {areas.map(a => (
+                {metros.map(a => (
                   <span key={a} style={{
                     fontFamily: '"Poppins", sans-serif',
                     fontWeight: 400,
