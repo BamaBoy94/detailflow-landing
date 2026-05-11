@@ -78,13 +78,29 @@ function Nav() {
 
   return (
     <header style={headerStyle}>
-      <div className="mx-auto max-w-7xl px-6 lg:px-10 flex items-center justify-between" style={{ height: 90 }}>
+      {/*
+        Three-column layout: [logo] [nav — centered] [book now]
+        Each outer column is flex:1 so the nav is always truly centered.
+        Below lg (1024px): logo shrinks + hamburger replaces nav + book now.
+      */}
+      <div
+        className="mx-auto max-w-7xl px-6 lg:px-10"
+        style={{ height: 90, display: 'flex', alignItems: 'center' }}
+      >
+        {/* ── Left: logo ── */}
+        <div style={{ flex: '1 1 0', display: 'flex', alignItems: 'center' }}>
+          {/* Mobile / tablet logo (< 1024px) */}
+          <a href="#" className="lg:hidden" style={{ textDecoration: 'none' }}>
+            <Logo scale={0.75} />
+          </a>
+          {/* Desktop logo (≥ 1024px) */}
+          <a href="#" className="hidden lg:block" style={{ textDecoration: 'none' }}>
+            <Logo scale={1.45} />
+          </a>
+        </div>
 
-        <a href="#" style={{ textDecoration: 'none' }}>
-          <Logo scale={1.45} />
-        </a>
-
-        <nav className="hidden md:flex items-center gap-10 lg:gap-14">
+        {/* ── Center: nav links — desktop only ── */}
+        <nav className="hidden lg:flex items-center gap-10 xl:gap-14">
           {links.map(l => (
             <a
               key={l}
@@ -96,6 +112,7 @@ function Nav() {
                 color: C.silver,
                 textDecoration: 'none',
                 transition: 'color 0.2s',
+                whiteSpace: 'nowrap',
               }}
               onMouseEnter={e => (e.currentTarget.style.color = C.white)}
               onMouseLeave={e => (e.currentTarget.style.color = C.silver)}
@@ -105,10 +122,11 @@ function Nav() {
           ))}
         </nav>
 
-        <div className="flex items-center gap-3">
+        {/* ── Right: book now + hamburger ── */}
+        <div style={{ flex: '1 1 0', display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: 12 }}>
           <Link
             to={BOOKING_URL}
-            className="hidden md:inline-flex items-center justify-center"
+            className="hidden lg:inline-flex items-center justify-center"
             style={{
               fontFamily: '"Poppins", sans-serif',
               fontWeight: 500,
@@ -120,6 +138,7 @@ function Nav() {
               padding: '10px 28px',
               textDecoration: 'none',
               transition: 'background 0.2s, color 0.2s',
+              whiteSpace: 'nowrap',
             }}
             onMouseEnter={e => {
               e.currentTarget.style.background = C.white
@@ -136,7 +155,7 @@ function Nav() {
           <Sheet>
             <SheetTrigger asChild>
               <button
-                className="md:hidden p-2"
+                className="lg:hidden p-2"
                 style={{ color: C.silver, background: 'none', border: 'none', cursor: 'pointer' }}
               >
                 <Menu className="w-5 h-5" />
@@ -319,10 +338,10 @@ function TrustBar() {
           {stats.map((s, i) => (
             <div
               key={s.label}
+              className={i < stats.length - 1 ? 'border-b sm:border-b-0 sm:border-r border-[rgba(166,166,166,0.15)]' : ''}
               style={{
                 padding: '40px 28px',
                 textAlign: 'center',
-                borderRight: i < stats.length - 1 ? `1px solid ${C.border}` : 'none',
               }}
             >
               <div style={{
@@ -462,13 +481,13 @@ function Services() {
           {services.map((s, i) => (
             <div
               key={s.tag}
+              className={i > 0 ? 'lg:border-l border-[rgba(166,166,166,0.15)]' : ''}
               style={{
                 display: 'flex',
                 flexDirection: 'column',
                 padding: '44px 40px 40px',
                 background: s.featured ? C.charcoal : 'transparent',
                 borderTop: `1px solid ${s.featured ? C.borderHi : C.border}`,
-                borderLeft: i > 0 ? `1px solid ${C.border}` : 'none',
                 position: 'relative',
               }}
             >
@@ -703,11 +722,11 @@ function Testimonials() {
           {reviews.map((r, i) => (
             <div
               key={i}
+              className={i > 0 ? 'lg:border-l border-[rgba(166,166,166,0.15)] border-t lg:border-t-0' : ''}
               style={{
                 display: 'flex',
                 flexDirection: 'column',
                 padding: '44px 36px 40px',
-                borderLeft: i > 0 ? `1px solid ${C.border}` : 'none',
               }}
             >
               <span style={{
