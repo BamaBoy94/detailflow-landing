@@ -64,7 +64,7 @@ function Nav() {
     return () => window.removeEventListener('scroll', fn)
   }, [])
 
-  const links = ['Services', 'About', 'Reviews', 'Coverage']
+  const links = ['Services', 'About', 'Gallery', 'Reviews']
 
   const headerStyle: React.CSSProperties = {
     position: 'fixed',
@@ -78,21 +78,21 @@ function Nav() {
 
   return (
     <header style={headerStyle}>
-      <div className="mx-auto max-w-7xl px-6 lg:px-10 flex items-center justify-between" style={{ height: 72 }}>
+      <div className="mx-auto max-w-7xl px-6 lg:px-10 flex items-center justify-between" style={{ height: 90 }}>
 
         <a href="#" style={{ textDecoration: 'none' }}>
-          <Logo scale={1} />
+          <Logo scale={1.45} />
         </a>
 
-        <nav className="hidden md:flex items-center gap-8 lg:gap-10">
+        <nav className="hidden md:flex items-center gap-10 lg:gap-14">
           {links.map(l => (
             <a
               key={l}
-              href={`#${l === 'Coverage' ? 'coverage' : l.toLowerCase()}`}
+              href={`#${l.toLowerCase()}`}
               style={{
                 ...label,
-                letterSpacing: '0.16em',
-                fontSize: '0.68rem',
+                letterSpacing: '0.18em',
+                fontSize: '0.7rem',
                 color: C.silver,
                 textDecoration: 'none',
                 transition: 'color 0.2s',
@@ -112,12 +112,12 @@ function Nav() {
             style={{
               fontFamily: '"Poppins", sans-serif',
               fontWeight: 500,
-              fontSize: '0.68rem',
-              letterSpacing: '0.14em',
+              fontSize: '0.7rem',
+              letterSpacing: '0.16em',
               textTransform: 'uppercase',
               color: C.white,
               border: `1px solid ${C.white}`,
-              padding: '9px 22px',
+              padding: '10px 28px',
               textDecoration: 'none',
               transition: 'background 0.2s, color 0.2s',
             }}
@@ -148,12 +148,12 @@ function Nav() {
               style={{ background: C.offBlack, borderLeft: `1px solid ${C.border}` }}
             >
               <div className="flex flex-col h-full pt-8 pb-10 px-4">
-                <Logo scale={0.9} />
+                <Logo scale={1.1} />
                 <nav className="flex flex-col gap-0 flex-1 mt-10">
                   {links.map((l, i) => (
                     <div key={l}>
                       <a
-                        href={`#${l === 'Coverage' ? 'coverage' : l.toLowerCase()}`}
+                        href={`#${l.toLowerCase()}`}
                         style={{
                           display: 'block',
                           padding: '16px 0',
