@@ -235,16 +235,31 @@ function Hero() {
       background: '#0A0A0A',
     }}>
 
-      {/*
-        ── Photo slot ─────────────────────────────────────────────────────────
-        Swap this div for a full-bleed automotive close-up:
-        deep paint reflection, wheel arch, or interior leather.
-        Suggested: 1920×1080, high contrast, minimal saturation.
-      */}
+      {/* ── Photo slot ─────────────────────────────────────────────────────── */}
       <div style={{ position: 'absolute', inset: 0 }}>
+        {/*
+          Drop your hero car photo at: /public/hero-car.jpg
+          Best specs: 1920×1080, dark background, rear 3/4 angle.
+          The gradient overlays below handle left-side darkening for text legibility.
+          If the file is missing, the dark gradient placeholder shows automatically.
+        */}
+        <img
+          src="/hero-car.jpg"
+          alt=""
+          style={{
+            position: 'absolute',
+            inset: 0,
+            width: '100%',
+            height: '100%',
+            objectFit: 'cover',
+            objectPosition: '60% center',
+          }}
+          onError={e => { (e.currentTarget as HTMLImageElement).style.display = 'none' }}
+        />
+
         {/* Film-grain texture — editorial quality feel */}
         <svg
-          style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', opacity: 0.055, pointerEvents: 'none' }}
+          style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', opacity: 0.045, pointerEvents: 'none', zIndex: 1 }}
           aria-hidden="true"
         >
           <filter id="grain">
@@ -253,19 +268,20 @@ function Hero() {
           </filter>
           <rect width="100%" height="100%" filter="url(#grain)" />
         </svg>
-        {/* Subtle vignette for depth when no photo is present */}
+
+        {/* Fallback vignette — visible only when no photo is loaded */}
         <div style={{
-          position: 'absolute', inset: 0,
-          background: 'radial-gradient(ellipse 90% 70% at 68% 38%, rgba(28,28,28,0.5) 0%, #0A0A0A 75%)',
+          position: 'absolute', inset: 0, zIndex: 1,
+          background: 'radial-gradient(ellipse 90% 70% at 68% 38%, rgba(28,28,28,0.4) 0%, #0A0A0A 80%)',
         }} />
       </div>
 
-      {/* Cinematic overlay — works with or without photo */}
+      {/* Cinematic overlay — darkens left for text, bottom for bleed */}
       <div style={{
         position: 'absolute', inset: 0, zIndex: 2,
         background: [
-          'linear-gradient(to bottom, rgba(10,10,10,0.5) 0%, transparent 22%, rgba(10,10,10,0.55) 60%, rgba(10,10,10,0.98) 100%)',
-          'linear-gradient(to right, rgba(10,10,10,0.82) 0%, rgba(10,10,10,0.1) 65%)',
+          'linear-gradient(to bottom, rgba(10,10,10,0.45) 0%, transparent 20%, rgba(10,10,10,0.5) 55%, rgba(10,10,10,0.97) 100%)',
+          'linear-gradient(to right, rgba(10,10,10,0.88) 0%, rgba(10,10,10,0.35) 50%, rgba(10,10,10,0.05) 72%)',
         ].join(', '),
       }} />
 
