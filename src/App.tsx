@@ -1,10 +1,13 @@
 import { useState, useEffect } from 'react'
+import { Routes, Route, Link } from 'react-router-dom'
 import { Menu, ArrowRight, MapPin, Check, ChevronRight } from 'lucide-react'
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet'
 import { Separator } from '@/components/ui/separator'
 import { Logo } from '@/components/Logo'
+import BookPage from './pages/BookPage'
+import AdminPage from './pages/AdminPage'
 
-const BOOKING_URL = 'https://form.typeform.com/to/CnNOTLPV'
+const BOOKING_URL = '/book'
 
 const C = {
   offBlack:  '#0D0D0D',
@@ -25,6 +28,16 @@ const label: React.CSSProperties = {
 }
 
 export default function App() {
+  return (
+    <Routes>
+      <Route path="/book"  element={<BookPage />} />
+      <Route path="/admin" element={<AdminPage />} />
+      <Route path="*" element={<LandingPage />} />
+    </Routes>
+  )
+}
+
+function LandingPage() {
   return (
     <div style={{ background: C.offBlack, color: C.white, minHeight: '100svh' }}>
       <Nav />
@@ -93,8 +106,8 @@ function Nav() {
         </nav>
 
         <div className="flex items-center gap-3">
-          <a
-            href={BOOKING_URL}
+          <Link
+            to={BOOKING_URL}
             className="hidden md:inline-flex items-center justify-center"
             style={{
               fontFamily: '"Poppins", sans-serif',
@@ -118,7 +131,7 @@ function Nav() {
             }}
           >
             Book Now
-          </a>
+          </Link>
 
           <Sheet>
             <SheetTrigger asChild>
@@ -159,8 +172,8 @@ function Nav() {
                     </div>
                   ))}
                 </nav>
-                <a
-                  href={BOOKING_URL}
+                <Link
+                  to={BOOKING_URL}
                   style={{
                     marginTop: 'auto',
                     display: 'flex',
@@ -178,7 +191,7 @@ function Nav() {
                   }}
                 >
                   Book Now
-                </a>
+                </Link>
               </div>
             </SheetContent>
           </Sheet>
@@ -937,13 +950,15 @@ function HoverBtn({
     border: `1px solid ${hovered ? 'rgba(166,166,166,0.45)' : C.border}`,
   }
 
-  return (
-    <a
-      href={href}
-      style={variant === 'solid' ? solid : ghost}
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
-    >
+  const style = variant === 'solid' ? solid : ghost
+  const isInternal = href.startsWith('/')
+
+  return isInternal ? (
+    <Link to={href} style={style} onMouseEnter={() => setHovered(true)} onMouseLeave={() => setHovered(false)}>
+      {children}
+    </Link>
+  ) : (
+    <a href={href} style={style} onMouseEnter={() => setHovered(true)} onMouseLeave={() => setHovered(false)}>
       {children}
     </a>
   )
