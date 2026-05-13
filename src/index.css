@@ -1,10 +1,12 @@
 @import "tailwindcss";
 
 @theme {
+  /* ── Base palette ───────────────────────────── */
   --color-black:      #000000;
   --color-surface:    #0a0a0a;
   --color-surface-2:  #111111;
   --color-surface-3:  #1a1a1a;
+  --color-surface-4:  #222222;
   --color-white:      #ffffff;
   --color-off-white:  #f0f0f0;
   --color-gray-hi:    #c0c0c0;
@@ -13,10 +15,26 @@
   --color-border:     rgba(255,255,255,0.08);
   --color-border-hi:  rgba(255,255,255,0.15);
 
-  /* Outfit: brand wordmark + display headlines */
+  /* ── Sharp Filter signal colors ─────────────── */
+  --color-emerald:     #10b981;
+  --color-emerald-dim: rgba(16,185,129,0.15);
+  --color-emerald-hi:  #34d399;
+  --color-red:         #ef4444;
+  --color-red-dim:     rgba(239,68,68,0.15);
+  --color-red-hi:      #f87171;
+  --color-amber:       #f59e0b;
+  --color-amber-dim:   rgba(245,158,11,0.15);
+  --color-amber-hi:    #fbbf24;
+  --color-blue:        #3b82f6;
+  --color-blue-dim:    rgba(59,130,246,0.15);
+  --color-blue-hi:     #60a5fa;
+  --color-violet:      #8b5cf6;
+  --color-violet-dim:  rgba(139,92,246,0.15);
+
+  /* ── Fonts ───────────────────────────────────── */
   --font-brand: "Outfit", sans-serif;
-  /* DM Sans: body, captions, UI labels */
   --font-sans:  "DM Sans", sans-serif;
+  --font-mono:  "JetBrains Mono", "Fira Code", ui-monospace, monospace;
 }
 
 @keyframes fadeUp {
@@ -24,14 +42,75 @@
   to   { opacity: 1; transform: translateY(0); }
 }
 
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes slideIn {
+  from { transform: translateX(-8px); opacity: 0; }
+  to   { transform: translateX(0); opacity: 1; }
+}
+
 @layer base {
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   html { scroll-behavior: smooth; }
   body {
-    background: var(--color-black);
+    background: #0a0a0a;
     color: var(--color-white);
     font-family: var(--font-sans);
     -webkit-font-smoothing: antialiased;
     overflow-x: hidden;
   }
+  ::-webkit-scrollbar { width: 4px; height: 4px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.12); border-radius: 2px; }
+  ::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.2); }
 }
+
+/* ── Utility classes for Sharp Filter ─────────── */
+.sf-card {
+  background: var(--color-surface-2);
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: 8px;
+}
+
+.sf-card-hover {
+  transition: border-color 0.2s, background 0.2s;
+}
+.sf-card-hover:hover {
+  border-color: rgba(255,255,255,0.14);
+  background: var(--color-surface-3);
+}
+
+.sf-label {
+  font-size: 0.65rem;
+  font-weight: 400;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.35);
+}
+
+.sf-value {
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: rgba(255,255,255,0.9);
+}
+
+.sf-mono {
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+}
+
+.score-high  { color: var(--color-emerald); }
+.score-mid   { color: var(--color-amber); }
+.score-low   { color: var(--color-red); }
+
+.ev-positive { color: var(--color-emerald); }
+.ev-negative { color: var(--color-red); }
+.ev-neutral  { color: rgba(255,255,255,0.5); }
+
+.status-candidate { background: var(--color-blue-dim);   color: var(--color-blue-hi); }
+.status-approved  { background: var(--color-emerald-dim); color: var(--color-emerald-hi); }
+.status-rejected  { background: var(--color-red-dim);    color: var(--color-red-hi); }
+.status-watchlist { background: var(--color-amber-dim);  color: var(--color-amber-hi); }
