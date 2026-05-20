@@ -244,7 +244,7 @@ function Hero() {
           If the file is missing, the dark gradient placeholder shows automatically.
         */}
         <img
-          src="/hero-car.jpg"
+          src="/webpage%20car.png"
           alt=""
           style={{
             position: 'absolute',
