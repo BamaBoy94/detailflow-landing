@@ -68,10 +68,18 @@ function Nav() {
         scrolled ? 'bg-black/96 border-b border-white/[0.07]' : 'bg-transparent'
       }`}
     >
-      <div className="mx-auto max-w-7xl px-6 lg:px-10 flex items-center justify-between h-[70px]">
+      <div className="mx-auto max-w-7xl px-6 lg:px-10 flex items-center justify-between h-[80px]">
 
-        {/* Stacked wordmark — exactly as in brand kit header */}
-        <a href="#" className="no-underline">
+        {/* Logo lockup: icon mark + stacked wordmark */}
+        <a href="#" className="no-underline flex items-center gap-3.5 group">
+          <img
+            src="/favicon.svg"
+            alt="Detail Door"
+            className="h-[28px] w-auto shrink-0 transition-opacity duration-200 group-hover:opacity-80"
+            style={{ filter: 'brightness(0) invert(1)' }}
+          />
+          {/* Hairline divider */}
+          <span className="hidden sm:block w-px h-7 bg-white/[0.12]" />
           <Wordmark size="md" />
         </a>
 
@@ -106,7 +114,16 @@ function Nav() {
             </SheetTrigger>
             <SheetContent side="right" className="bg-black border-white/[0.07] w-72">
               <div className="flex flex-col h-full pt-8 pb-10 px-4">
-                <Wordmark size="sm" />
+                <div className="flex items-center gap-3">
+                  <img
+                    src="/favicon.svg"
+                    alt="Detail Door"
+                    className="h-[22px] w-auto shrink-0"
+                    style={{ filter: 'brightness(0) invert(1)' }}
+                  />
+                  <span className="w-px h-5 bg-white/[0.12]" />
+                  <Wordmark size="sm" />
+                </div>
                 <nav className="flex flex-col gap-0 flex-1 mt-10">
                   {links.map((l, i) => (
                     <div key={l.label}>
@@ -649,7 +666,16 @@ function Footer() {
   return (
     <footer className="border-t border-white/[0.07] bg-[#080808]">
       <div className="mx-auto max-w-7xl px-6 lg:px-10 py-10 flex flex-col md:flex-row items-center justify-between gap-5">
-        <Wordmark size="sm" />
+        <div className="flex items-center gap-3">
+          <img
+            src="/favicon.svg"
+            alt="Detail Door"
+            className="h-[18px] w-auto shrink-0 opacity-40"
+            style={{ filter: 'brightness(0) invert(1)' }}
+          />
+          <span className="w-px h-4 bg-white/[0.10]" />
+          <Wordmark size="sm" />
+        </div>
         <p className="font-sans text-[0.65rem] tracking-[0.1em] text-white/20 uppercase">
           Serving Solano County + Sacramento · © 2025
         </p>
