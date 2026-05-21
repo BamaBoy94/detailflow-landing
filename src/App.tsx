@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { Menu, ArrowRight, MapPin, Check, ChevronRight } from 'lucide-react'
+import { Menu, ArrowRight, MapPin, Check, ChevronRight, Quote } from 'lucide-react'
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet'
 import { Separator } from '@/components/ui/separator'
 
@@ -13,6 +13,8 @@ export default function App() {
       <TrustBar />
       <Services />
       <Process />
+      <Gallery />
+      <Reviews />
       <CtaBanner />
       <Footer />
     </div>
@@ -430,6 +432,147 @@ function Process() {
   )
 }
 
+/* ─── GALLERY ─────────────────────────────────────────────────────────────── */
+
+const GALLERY_ITEMS = [
+  { label: 'Exterior Detail',   loc: 'Dixon',         grad: 'from-[#1c1c1c] via-[#2a2a2a] to-[#111]',   span: 'lg:col-span-2 lg:row-span-2' },
+  { label: 'Interior Detail',   loc: 'Fairfield',     grad: 'from-[#181818] via-[#202020] to-[#0e0e0e]', span: '' },
+  { label: 'Full Detail',       loc: 'Vacaville',     grad: 'from-[#141414] via-[#1e1e1e] to-[#0c0c0c]', span: '' },
+  { label: 'Engine Bay',        loc: 'Sacramento',    grad: 'from-[#1a1a1a] via-[#252525] to-[#101010]', span: '' },
+  { label: 'Ceramic Coating',   loc: 'Suisun City',   grad: 'from-[#111] via-[#1d1d1d] to-[#0a0a0a]',   span: '' },
+  { label: 'Paint Correction',  loc: 'Fairfield',     grad: 'from-[#161616] via-[#222] to-[#0d0d0d]',   span: 'lg:col-span-2' },
+]
+
+function Gallery() {
+  return (
+    <section id="gallery" className="py-28 lg:py-40 bg-[#080808]">
+      <div className="mx-auto max-w-7xl px-6 lg:px-10">
+
+        <div className="mb-16 lg:mb-20">
+          <p className="font-sans text-[0.65rem] tracking-[0.3em] uppercase text-white/30 mb-4">
+            Our work
+          </p>
+          <h2
+            className="font-brand font-[300] text-white leading-none"
+            style={{ fontSize: 'clamp(2.8rem, 8vw, 5.5rem)', fontFamily: '"Outfit", sans-serif' }}
+          >
+            The results
+          </h2>
+        </div>
+
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-px bg-white/[0.04]">
+          {GALLERY_ITEMS.map((item) => (
+            <div
+              key={item.label + item.loc}
+              className={`group relative bg-[#0a0a0a] overflow-hidden ${item.span}`}
+            >
+              {/* Simulated automotive surface */}
+              <div
+                className={`w-full h-full min-h-[160px] lg:min-h-[200px] bg-gradient-to-br ${item.grad} flex items-end transition-all duration-500 group-hover:brightness-125`}
+                style={{
+                  backgroundImage: `
+                    radial-gradient(ellipse 60% 50% at 75% 30%, rgba(255,255,255,0.045) 0%, transparent 60%),
+                    repeating-linear-gradient(-48deg, transparent, transparent 40px, rgba(255,255,255,0.005) 40px, rgba(255,255,255,0.005) 41px)
+                  `,
+                }}
+              >
+                {/* Bottom label bar */}
+                <div className="w-full px-4 py-3 bg-gradient-to-t from-black/80 to-transparent">
+                  <p className="font-sans text-[0.7rem] font-[400] text-white/80 leading-tight">{item.label}</p>
+                  <p className="font-sans text-[0.58rem] tracking-[0.15em] uppercase text-white/30 mt-0.5">{item.loc}</p>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <p className="mt-7 font-sans text-[0.65rem] tracking-[0.15em] uppercase text-white/20 text-center">
+          New project photos added as work is documented
+        </p>
+
+      </div>
+    </section>
+  )
+}
+
+/* ─── REVIEWS ─────────────────────────────────────────────────────────────── */
+
+const REVIEWS = [
+  {
+    quote: "Booked at 8am, detailer arrived by 10. Interior looks brand new — didn't think it could get that clean.",
+    name: 'Danielle M.',
+    location: 'Fairfield, CA',
+    service: 'Interior Detail',
+  },
+  {
+    quote: "Easiest car service I've ever scheduled. Full detail on my truck took under 3 hours and the results were insane.",
+    name: 'Kevin S.',
+    location: 'Sacramento, CA',
+    service: 'Full Detail',
+  },
+  {
+    quote: "I've tried other mobile detailers. Detail Door is the only one that showed up on time and actually finished what they promised.",
+    name: 'Aisha B.',
+    location: 'Vacaville, CA',
+    service: 'Exterior Detail',
+  },
+  {
+    quote: "Ceramic coating turned out perfect. Car was sitting in my driveway, done before noon. Will be back every season.",
+    name: 'Tyler R.',
+    location: 'Dixon, CA',
+    service: 'Full Detail',
+  },
+]
+
+function Reviews() {
+  return (
+    <section id="reviews" className="py-28 lg:py-40">
+      <div className="mx-auto max-w-7xl px-6 lg:px-10">
+
+        <div className="mb-16 lg:mb-20">
+          <p className="font-sans text-[0.65rem] tracking-[0.3em] uppercase text-white/30 mb-4">
+            Client reviews
+          </p>
+          <h2
+            className="font-brand font-[300] text-white leading-none"
+            style={{ fontSize: 'clamp(2.8rem, 8vw, 5.5rem)', fontFamily: '"Outfit", sans-serif' }}
+          >
+            What they say
+          </h2>
+        </div>
+
+        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-px bg-white/[0.06]">
+          {REVIEWS.map((r) => (
+            <div key={r.name} className="bg-black p-8 flex flex-col gap-6">
+              {/* Stars */}
+              <div className="flex gap-1">
+                {Array.from({ length: 5 }).map((_, i) => (
+                  <span key={i} className="text-white/40 text-[0.6rem]">★</span>
+                ))}
+              </div>
+
+              <Quote className="w-5 h-5 text-white/[0.08] -mb-3 -ml-0.5 shrink-0" />
+
+              <p className="font-sans font-[300] text-[0.875rem] text-white/55 leading-[1.85] flex-1">
+                "{r.quote}"
+              </p>
+
+              <div className="border-t border-white/[0.07] pt-5 flex flex-col gap-1">
+                <span className="font-sans font-[500] text-[0.8rem] text-white">{r.name}</span>
+                <span className="font-sans text-[0.65rem] tracking-[0.1em] text-white/30">{r.location}</span>
+                <span className="font-sans text-[0.6rem] tracking-[0.16em] uppercase text-white/20 mt-1 border border-white/[0.07] px-2 py-0.5 self-start">
+                  {r.service}
+                </span>
+              </div>
+            </div>
+          ))}
+        </div>
+
+      </div>
+    </section>
+  )
+}
+
 /* ─── CTA BANNER ──────────────────────────────────────────────────────────── */
 
 function CtaBanner() {
@@ -468,7 +611,7 @@ function CtaBanner() {
                 Connecting customers with mobile detailers across Solano County and Greater Sacramento.
               </p>
 
-              <div className="flex flex-wrap gap-2" id="reviews">
+              <div className="flex flex-wrap gap-2">
                 {areas.map(a => (
                   <span
                     key={a}
